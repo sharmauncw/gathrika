@@ -64,6 +64,55 @@
         </div>
 
         <div class="card admin-card">
+          <h2 style="margin-top:0">Add booking (phone / walk-in)</h2>
+          <p class="muted">For patients who call or walk in. Desk bookings count toward the same slot capacity as online bookings, so a slot can never be given away twice.</p>
+          <form id="deskForm" novalidate>
+            <div class="desk-grid">
+              <div class="field" id="df-service">
+                <label for="deskService">Service *</label>
+                <select id="deskService"></select>
+                <div class="hint" id="deskServiceHint" hidden>Books as a Dermatology Consultation — the doctor plans this service during the visit.</div>
+                <div class="error">Please choose a service.</div>
+              </div>
+              <div class="field" id="df-date">
+                <label for="deskDate">Date *</label>
+                <input id="deskDate" type="date">
+                <div class="error">Please pick a date (Monday to Saturday, within 30 days).</div>
+              </div>
+              <div class="field" id="df-time">
+                <label for="deskTime">Time *</label>
+                <select id="deskTime"><option value="">Choose a date first</option></select>
+                <div class="error">Please choose a time slot.</div>
+              </div>
+              <div class="field" id="df-name">
+                <label for="deskName">Patient name *</label>
+                <input id="deskName" type="text" autocomplete="off" placeholder="e.g. Priya Sharma">
+                <div class="error">Please enter the patient's name.</div>
+              </div>
+              <div class="field" id="df-mobile">
+                <label for="deskMobile">Mobile number (WhatsApp) *</label>
+                <input id="deskMobile" type="tel" inputmode="tel" autocomplete="off" placeholder="+91 ">
+                <div class="error">Please enter a valid 10-digit Indian mobile number.</div>
+              </div>
+              <div class="field">
+                <label>Visit type</label>
+                <div class="radio-row" role="radiogroup" aria-label="New or returning patient">
+                  <label class="radio-pill"><input type="radio" name="deskVisit" value="new" checked>New patient</label>
+                  <label class="radio-pill"><input type="radio" name="deskVisit" value="returning">Returning</label>
+                </div>
+              </div>
+              <div class="field desk-note-field">
+                <label for="deskNote">Note <span class="muted">(optional)</span></label>
+                <input id="deskNote" type="text" placeholder="e.g. Called in the morning, asked for evening if possible">
+              </div>
+            </div>
+            <div id="deskMsg"></div>
+            <button class="btn btn-primary" type="submit" id="deskSubmit">Add booking</button>
+          </form>
+          <div id="deskSuccess" hidden></div>
+        </div>
+
+        <div class="card admin-card">
           <h2 style="margin-top:0">Blocked dates</h2>
           <p class="muted">On a blocked date the booking page shows “Clinic closed on this date” and offers no slots.</p>
           <form id="blockForm" class="admin-row" novalidate>

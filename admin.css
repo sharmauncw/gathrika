@@ -43,6 +43,26 @@
   padding: 12px 14px; margin-bottom: 10px; background: #fff;
 }
 
+/* Desk booking (phone / walk-in) form */
+.desk-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+}
+.desk-note-field { grid-column: 1 / -1; }
+.desk-grid .field select, .desk-grid .field input { width: 100%; }
+@media (max-width: 640px) {
+  .desk-grid { grid-template-columns: 1fr; }
+}
+
+/* Source badges in the appointments table */
+.src-badge {
+  display: inline-block; padding: 2px 9px; border-radius: 999px;
+  font-size: .74rem; font-weight: 700; letter-spacing: .03em;
+  text-transform: uppercase; white-space: nowrap;
+}
+.src-desk { background: #FBF0E4; border: 1px solid #EFD3AE; color: #6E4A12; }
+.src-web { background: var(--primary-soft); border: 1px solid var(--primary); color: var(--primary); }
+
 @media (max-width: 640px) {
   .admin-table thead { display: none; }
   .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
