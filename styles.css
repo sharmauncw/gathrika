@@ -234,6 +234,7 @@ p{margin:0 0 1em}
 .footer-grid ul{list-style:none;margin:0;padding:0}
 .footer-grid li{margin-bottom:8px}
 .footer-legal{border-top:1px solid rgba(255,255,255,.18);margin-top:26px;padding-top:16px;font-size:.85rem;color:#C7D2CB}
+.studio-mark{width:20px;height:20px;border-radius:5px;vertical-align:-5px;margin-right:7px;box-shadow:0 0 0 1px rgba(255,255,255,.28)}
 
 /* ---------- Floating WhatsApp + mobile bar ---------- */
 .float-wa{

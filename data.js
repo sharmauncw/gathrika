@@ -541,7 +541,7 @@ function renderChrome(activePage) {
       </div>
       <div class="footer-legal">
         <p>© 2026 Gathrika Skin Clinic. Information on this website is for general awareness and is not a substitute for an in-person medical consultation.</p>
-        <p class="small">Website by Sharma Digital Studio · <a href="admin.html">Clinic login</a></p>
+        <p class="small"><img class="studio-mark" src="studio-logo.png" alt="Sharma Digital Studio logo">Website by Sharma Digital Studio · <a href="admin.html">Clinic login</a></p>
       </div>
     </div>
   </footer>
