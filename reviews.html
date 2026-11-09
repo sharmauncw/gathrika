@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patient Reviews &amp; Ratings | Gathrika Skin Clinic, Medipally</title>
+<meta name="description" content="Gathrika Skin Clinic is rated 4.8 from 232 reviews on Justdial. Read verified patient stories from Practo about acne and pigmentation treatment with Dr. G. Kiranmayee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232F5D50'/%3E%3Ctext x='32' y='44' font-family='Georgia' font-size='36' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<main>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h1>Reviews &amp; patient stories</h1>
+        <p>We publish ratings exactly as they appear on public platforms, and patient stories only with attribution. We never write, buy or edit reviews.</p>
+      </div>
+
+      <div class="rating-summary">
+        <div class="card" style="text-align:center;align-items:center">
+          <div class="rating-big">4.8 ★</div>
+          <p style="margin:0"><strong>Justdial — clinic</strong><br><span class="muted">232 reviews</span></p>
+        </div>
+        <div class="card" style="text-align:center;align-items:center">
+          <div class="rating-big">4.7 ★</div>
+          <p style="margin:0"><strong>Justdial — doctor</strong><br><span class="muted">4 ratings</span></p>
+        </div>
+        <div class="card" style="text-align:center;align-items:center">
+          <div class="rating-big">2</div>
+          <p style="margin:0"><strong>Practo patient stories</strong><br><span class="muted">Both recommend the doctor</span></p>
+        </div>
+      </div>
+
+      <h2 style="margin-top:34px">Verified patient stories (Practo)</h2>
+      <div class="grid grid-2" id="stories"></div>
+
+      <h2 style="margin-top:34px">What patients mention most</h2>
+      <p id="themes"></p>
+
+      <!-- RESULTS PLACEHOLDER -->
+      <h2 style="margin-top:34px">Patient results</h2>
+      <div class="results-placeholder">
+        <h3>Patient results gallery — coming soon</h3>
+        <p class="muted" style="max-width:38em;margin:0 auto">Before-and-after photographs will appear here only when patients have given written consent for their images to be published. Ask the doctor during your consultation about realistic outcomes for your concern.</p>
+      </div>
+      <div class="disclaimer-box"><strong>Please note:</strong> Results vary from person to person. Images of actual patients are shared only with written consent, and no result shown or described on this website is a promise or assurance of the outcome of any treatment.</div>
+
+      <div class="card" style="margin-top:26px">
+        <h2>Visited us? Share your experience</h2>
+        <p>Honest reviews help neighbours find the right doctor. Our Google review link will appear here once the clinic's Google Business Profile is set up — until then, you can review us on Justdial or Practo, where the clinic is already listed.</p>
+        <p class="small muted" style="margin:0">If anything about your visit was not right, we would rather hear it directly — please use the <a href="contact.html">contact page</a> and the doctor will look into it personally.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="data.js"></script>
+<script>
+  renderChrome("reviews.html");
+  document.getElementById("stories").innerHTML = TESTIMONIALS.map(t => `
+    <article class="card quote-card">
+      <div class="stars" aria-hidden="true">★★★★★</div>
+      <blockquote>${t.quote}</blockquote>
+      <p class="small" style="margin:0"><strong>${t.name}</strong> — ${t.treatment}<br><span class="muted">${t.source}</span></p>
+    </article>`).join("");
+  document.getElementById("themes").innerHTML = REVIEW_THEMES.map(t =>
+    `<span class="chip" style="margin:0 6px 8px 0">${t}</span>`).join("");
+</script>
+</body>
+</html>

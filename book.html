@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book an Appointment | Gathrika Skin Clinic, Medipally</title>
+<meta name="description" content="Request an appointment at Gathrika Skin Clinic, Medipally. Choose a service, date and time — pay at clinic (consultation Rs 300). The clinic confirms on WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232F5D50'/%3E%3Ctext x='32' y='44' font-family='Georgia' font-size='36' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<main>
+  <section class="section">
+    <div class="container booking-shell">
+      <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto">
+        <h1>Book an appointment</h1>
+        <p>Request a slot in under a minute. <strong>Pay at clinic — consultation Rs 300.</strong><br>
+        This sends a booking <em>request</em> — the clinic confirms your appointment on WhatsApp before your visit.</p>
+      </div>
+      <div id="bkApp" aria-live="polite"></div>
+
+      <div class="bk-panel" style="margin-top:26px">
+        <h2 style="font-size:1.25rem">Reschedule or cancel</h2>
+        <p class="muted">Enter the reference code from your confirmation and the mobile number you booked with.</p>
+        <div class="field">
+          <label for="mgRef">Reference code</label>
+          <input id="mgRef" type="text" placeholder="e.g. GATH-XXXXXX" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="mgMobile">Mobile number</label>
+          <input id="mgMobile" type="tel" inputmode="tel" placeholder="+91 ">
+        </div>
+        <button class="btn btn-primary" type="button" id="mgFind">Find my booking</button>
+        <div id="mgResult" style="margin-top:14px"></div>
+        <p class="small muted" style="margin-top:14px">Note: bookings made on this device are stored in this browser. If you booked on another phone, please contact the clinic via the <a href="contact.html">contact page</a> to change your appointment.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="data.js"></script>
+<script src="booking.js"></script>
+<script>renderChrome("book.html");</script>
+</body>
+</html>

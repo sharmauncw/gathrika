@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treatments in Medipally, Hyderabad | Gathrika Skin Clinic</title>
+<meta name="description" content="Dermatologist-led treatments in Medipally, Hyderabad: acne, pigmentation, chemical peels, laser, hair fall, PRP and more at Gathrika Skin Clinic. Consultation Rs 300.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232F5D50'/%3E%3Ctext x='32' y='44' font-family='Georgia' font-size='36' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<main>
+  <!-- CATALOG VIEW -->
+  <section class="section" id="catalogView">
+    <div class="container">
+      <div class="section-head">
+        <h1>Treatments at Gathrika Skin Clinic</h1>
+        <p>Doctor-planned care for skin, hair and nails in Medipally, Hyderabad. Tap any treatment for full details — what it is, who it suits, sessions, downtime and aftercare.</p>
+      </div>
+      <div class="filter-bar" id="filterBar" role="group" aria-label="Filter treatments by category"></div>
+      <div class="grid grid-3" id="treatmentGrid"></div>
+      <div class="disclaimer-box"><strong>Medical information:</strong> Treatment information on this page is general educational information only. It is not a substitute for an in-person consultation, and suitability for any procedure is decided by the doctor after examining you.</div>
+    </div>
+  </section>
+
+  <!-- DETAIL VIEW -->
+  <section class="section" id="detailView" hidden>
+    <div class="container" style="max-width:860px">
+      <p><a href="treatments.html" id="backToCatalog">← All treatments</a></p>
+      <div id="detailContent"></div>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script>
+  renderChrome("treatments.html");
+
+  const FILTERS = ["All", "Skin", "Hair", "Nails", "Aesthetic", "Laser", "Pediatric", "Consultation"];
+  let activeFilter = "All";
+
+  const filterBar = document.getElementById("filterBar");
+  const grid = document.getElementById("treatmentGrid");
+
+  function matchesFilter(s) {
+    if (activeFilter === "All") return true;
+    return s.category === activeFilter || (s.alsoCategories || []).includes(activeFilter);
+  }
+
+  function renderFilters() {
+    filterBar.innerHTML = FILTERS.map(f =>
+      `<button type="button" class="filter-btn ${f === activeFilter ? "active" : ""}" data-filter="${f}">${f}</button>`).join("");
+    filterBar.querySelectorAll("[data-filter]").forEach(b =>
+      b.addEventListener("click", () => { activeFilter = b.dataset.filter; renderFilters(); renderGrid(); }));
+  }
+
+  function renderGrid() {
+    const items = SERVICES.filter(matchesFilter);
+    grid.innerHTML = items.map(s => `
+      <article class="card">
+        <div>${statusChip(s)} <span class="chip chip-accent">${s.category}</span></div>
+        <h3>${s.name}</h3>
+        <p>${s.summary}</p>
+        <p class="price-note">${s.priceDisplay} · <span class="muted" style="font-weight:500">${s.sessions}</span></p>
+        <div class="card-foot">
+          <a class="btn btn-outline" style="min-height:44px;padding:9px 16px" href="treatments.html#${s.slug}">Full details</a>
+          ${s.bookable
+            ? `<a class="btn btn-primary" style="min-height:44px;padding:9px 16px" href="book.html?service=${s.slug}">Book</a>`
+            : `<a class="btn btn-primary" style="min-height:44px;padding:9px 16px" href="book.html?service=dermatology-consultation">Book a consultation</a>`}
+        </div>
+      </article>`).join("") ||
+      `<p class="muted">No treatments in this category yet.</p>`;
+  }
+
+  function faqHtml(faqs) {
+    return faqs.map(f => `<details class="faq-item"><summary>${f.q}</summary><div>${f.a}</div></details>`).join("");
+  }
+
+  function renderDetail(s) {
+    document.title = s.name + " in Medipally, Hyderabad | Gathrika Skin Clinic";
+    const related = (s.relatedProducts || []).map(productBySlug).filter(Boolean);
+    document.getElementById("detailContent").innerHTML = `
+      <span class="chip chip-accent">${s.category}</span> ${statusChip(s)}
+      <h1 style="margin-top:10px">${s.name}</h1>
+      <p style="font-size:1.08rem">${s.summary}</p>
+      <img class="hero-img" src="assets/treatment.webp" alt="Treatment at Gathrika Skin Clinic, Medipally" style="margin:14px 0 22px">
+      <div class="card" style="margin-bottom:20px">
+        <table class="info-table">
+          <tr><th>Sessions</th><td>${s.sessions}</td></tr>
+          <tr><th>Session duration</th><td>About ${s.durationMin} minutes</td></tr>
+          <tr><th>Downtime</th><td>${s.downtime}</td></tr>
+          <tr><th>Results timeline</th><td>${s.resultsTimeline}</td></tr>
+          <tr><th>Fee</th><td>${s.priceDisplay}${s.slug === "dermatology-consultation" ? "" : " — consultation Rs 300 applies for assessment"}</td></tr>
+        </table>
+      </div>
+      <h2>Who is it for?</h2><p>${s.whoFor}</p>
+      <h2>How it works</h2><p>${s.howItWorks}</p>
+      <h2>Aftercare</h2><p>${s.aftercare}</p>
+      <h2>Possible side-effects</h2><p>${s.sideEffects}</p>
+      <h2>Please note</h2><p>${s.contraindications}</p>
+      ${related.length ? `<h2>Often used with this treatment</h2>
+        <div class="grid grid-2">${related.map(p => `
+          <a class="card" href="products.html#${p.slug}" style="color:inherit">
+            <h3>${p.name}</h3><p>${p.use}</p>
+            <span style="color:var(--primary);font-weight:600">${p.rxOnly ? "Available after consultation" : "Ask at the clinic"} →</span>
+          </a>`).join("")}</div>` : ""}
+      <h2 style="margin-top:26px">Questions</h2>
+      ${faqHtml(s.faqs)}
+      <div class="card" style="margin-top:22px;text-align:center;align-items:center;padding:28px 22px">
+        <h2 style="margin-bottom:4px">${s.bookable ? "Book this treatment" : "Start with a consultation"}</h2>
+        <p class="muted" style="max-width:32em">${s.bookable
+          ? "Request an appointment online — the clinic confirms on WhatsApp. Pay at clinic."
+          : "This treatment is planned after examination. Book a consultation and the doctor will assess and plan it with you."}</p>
+        <a class="btn btn-primary" href="book.html?service=${s.bookable ? s.slug : "dermatology-consultation"}">${s.bookable ? "Book — " + s.name : "Book a consultation (Rs 300)"}</a>
+      </div>
+      <p class="medical-note"><strong>Medical disclaimer:</strong> The information on this page is for general education only and is not a substitute for a medical consultation, diagnosis or treatment. Outcomes vary from person to person, and no outcome is promised or assured. Please consult Dr. G. Kiranmayee in person for advice about your condition.</p>`;
+    document.getElementById("catalogView").hidden = true;
+    document.getElementById("detailView").hidden = false;
+    window.scrollTo({ top: 0 });
+  }
+
+  function route() {
+    const slug = (location.hash || "").replace("#", "");
+    const s = slug && serviceBySlug(slug);
+    if (s) { renderDetail(s); }
+    else {
+      document.title = "Treatments in Medipally, Hyderabad | Gathrika Skin Clinic";
+      document.getElementById("detailView").hidden = true;
+      document.getElementById("catalogView").hidden = false;
+    }
+  }
+
+  renderFilters();
+  renderGrid();
+  window.addEventListener("hashchange", route);
+  route();
+</script>
+</body>
+</html>

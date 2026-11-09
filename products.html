@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skin &amp; Hair Care Products at the Clinic | Gathrika Skin Clinic, Medipally</title>
+<meta name="description" content="Doctor-recommended sunscreens, cleansers, moisturisers, serums and scalp care dispensed at Gathrika Skin Clinic, Medipally. Showroom catalog — enquire at the clinic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232F5D50'/%3E%3Ctext x='32' y='44' font-family='Georgia' font-size='36' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<main>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h1>Products at the clinic</h1>
+        <p>These products are dispensed at Gathrika Skin Clinic as part of treatment plans. This is a showroom, not an online shop — there is no online payment. Ask about a product at your visit, or send an enquiry and the clinic will confirm the brand and price currently in stock.</p>
+      </div>
+      <img class="hero-img" src="assets/products.webp" alt="Skin and hair care products dispensed at Gathrika Skin Clinic" style="margin-bottom:24px">
+      <div class="filter-bar" id="productFilters" role="group" aria-label="Filter products"></div>
+      <div class="grid grid-3" id="productGrid"></div>
+      <div class="disclaimer-box"><strong>Please note:</strong> Product brands stocked at the clinic may vary. Prescription items are dispensed only after consultation, and only for the patient they are prescribed to. Always follow the usage directions given with your prescription.</div>
+    </div>
+  </section>
+
+  <section class="section" id="productDetail" hidden style="padding-top:0">
+    <div class="container" style="max-width:760px">
+      <p><a href="products.html" onclick="hideDetail(event)">← All products</a></p>
+      <div id="productDetailContent"></div>
+    </div>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script>
+  renderChrome("products.html");
+
+  const FILTERS = [
+    ["all", "All products"], ["acne", "Acne"], ["pigmentation", "Pigmentation"],
+    ["dryness", "Dryness"], ["hair", "Hair & scalp"], ["dandruff", "Dandruff"]
+  ];
+  let active = "all";
+  const bar = document.getElementById("productFilters");
+  const grid = document.getElementById("productGrid");
+
+  function renderBar() {
+    bar.innerHTML = FILTERS.map(([v, l]) =>
+      `<button type="button" class="filter-btn ${v === active ? "active" : ""}" data-f="${v}">${l}</button>`).join("");
+    bar.querySelectorAll("[data-f]").forEach(b => b.addEventListener("click", () => {
+      active = b.dataset.f; renderBar(); renderGrid();
+    }));
+  }
+
+  function enquireLabel(p) {
+    return p.rxOnly ? "Available after consultation" : "Enquire on WhatsApp";
+  }
+
+  function renderGrid() {
+    const items = PRODUCTS.filter(p => active === "all" || p.concerns.includes(active));
+    grid.innerHTML = items.map(p => `
+      <article class="card" id="card-${p.slug}">
+        <div><span class="chip chip-accent">${p.category}</span> ${p.rxOnly ? '<span class="chip chip-consult">Prescription</span>' : ""}</div>
+        <h3>${p.name}</h3>
+        <p>${p.use}</p>
+        <p class="small muted" style="margin:0">${p.size} · For: ${p.skinTypes.join(", ")}</p>
+        <div class="card-foot">
+          <a class="btn btn-outline" style="min-height:44px;padding:9px 16px" href="products.html#${p.slug}">Details</a>
+          <a class="btn ${p.rxOnly ? "btn-outline" : "btn-primary"}" style="min-height:44px;padding:9px 16px"
+             href="${p.rxOnly ? "book.html?service=dermatology-consultation" : waHref("Hi, I'd like to know about " + p.name + " at Gathrika Skin Clinic.")}"
+             ${!p.rxOnly && hasWhatsApp() ? 'target="_blank" rel="noopener"' : ""}>${enquireLabel(p)}</a>
+        </div>
+      </article>`).join("") || `<p class="muted">No products in this filter.</p>`;
+  }
+
+  function showDetail(p) {
+    document.getElementById("productDetail").hidden = false;
+    document.getElementById("productDetailContent").innerHTML = `
+      <div class="card">
+        <div><span class="chip chip-accent">${p.category}</span> ${p.rxOnly ? '<span class="chip chip-consult">Prescription — after consultation</span>' : ""}</div>
+        <h2 style="margin-top:6px">${p.name}</h2>
+        <p>${p.use}</p>
+        <table class="info-table">
+          <tr><th>Size</th><td>${p.size}</td></tr>
+          <tr><th>Suitable for</th><td>${p.skinTypes.join(", ")}</td></tr>
+          <tr><th>Key ingredients</th><td>${p.ingredients}</td></tr>
+          <tr><th>How to use</th><td>${p.usage}</td></tr>
+          <tr><th>Cautions</th><td>${p.cautions}</td></tr>
+          <tr><th>Price</th><td>Confirmed at the clinic (depends on the brand in stock)</td></tr>
+        </table>
+        <div class="card-foot" style="margin-top:14px">
+          ${p.rxOnly
+            ? `<a class="btn btn-primary" href="book.html?service=dermatology-consultation">Book a consultation</a>`
+            : `<a class="btn btn-primary" href="${waHref("Hi, I'd like to know about " + p.name + " at Gathrika Skin Clinic.")}" ${hasWhatsApp() ? 'target="_blank" rel="noopener"' : ""}>Enquire on WhatsApp</a>
+               <span class="muted">or simply ask at your visit.</span>`}
+        </div>
+      </div>`;
+    document.getElementById("productDetail").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function hideDetail(e) {
+    if (e) e.preventDefault();
+    document.getElementById("productDetail").hidden = true;
+    history.replaceState(null, "", "products.html");
+  }
+
+  function route() {
+    const slug = (location.hash || "").replace("#", "");
+    const p = slug && productBySlug(slug);
+    if (p) showDetail(p);
+  }
+
+  renderBar();
+  renderGrid();
+  window.addEventListener("hashchange", route);
+  route();
+</script>
+</body>
+</html>

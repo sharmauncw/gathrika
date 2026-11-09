@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact &amp; Directions | Gathrika Skin Clinic, Medipally, Hyderabad</title>
+<meta name="description" content="Gathrika Skin Clinic — 7-4 Main Road, Above Union Bank, Beside Sampoorna Hotel, Medipally, Peerzadiguda, Hyderabad 500098. Open Mon–Sat 11 AM–1 PM & 5–8 PM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232F5D50'/%3E%3Ctext x='32' y='44' font-family='Georgia' font-size='36' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<main>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h1>Contact &amp; directions</h1>
+        <p>The fastest way to reach us is to book online — or just walk in during clinic hours.</p>
+      </div>
+      <div class="grid grid-2" style="align-items:start">
+        <div>
+          <iframe class="map-embed" id="mapEmbed" title="Map — Gathrika Skin Clinic, Medipally" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" id="dirBtn" href="#" target="_blank" rel="noopener">Get directions</a>
+            <a class="btn btn-outline" id="mapBtn" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+          </div>
+          <div class="card" style="margin-top:8px">
+            <h3>Address</h3>
+            <p style="margin:0">Gathrika Skin Clinic<br>
+            7-4, Main Road, Above Union Bank,<br>
+            Beside Sampoorna Hotel, Medipally,<br>
+            Peerzadiguda, Hyderabad, Telangana 500098</p>
+            <p class="small muted" style="margin-top:8px">Landmarks: above Union Bank, beside Sampoorna Hotel, at the Medipally bus stop. Areas served: Medipally, Boduppal, Peerzadiguda, Chengicherla, Uppal, Narapally, Pocharam, Ghatkesar.</p>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <h3>Clinic hours</h3>
+            <table class="info-table">
+              <tr><th>Mon – Sat (Morning)</th><td>11:00 AM – 1:00 PM</td></tr>
+              <tr><th>Mon – Sat (Evening)</th><td>5:00 PM – 8:00 PM</td></tr>
+              <tr><th>Sunday</th><td>Closed</td></tr>
+              <tr><th>Consultation</th><td>Rs 300 · pay at clinic</td></tr>
+            </table>
+          </div>
+          <div class="card" style="margin-top:16px">
+            <h3>Call &amp; WhatsApp</h3>
+            <p id="phoneBlock">Call or WhatsApp us at <a href="tel:+919392631157"><strong>+91 93926 31157</strong></a> during clinic hours. You can also book online — the clinic confirms every booking request on WhatsApp.</p>
+            <div class="hero-ctas" id="phoneActions">
+              <a class="btn btn-primary" href="book.html">Book an appointment</a>
+            </div>
+          </div>
+          <div class="form-card" style="margin-top:16px">
+            <h3>Send an enquiry</h3>
+            <form id="enquiryForm" novalidate>
+              <div class="field" id="e-name">
+                <label for="eqName">Your name *</label>
+                <input id="eqName" type="text" autocomplete="name">
+                <div class="error">Please enter your name.</div>
+              </div>
+              <div class="field" id="e-mobile">
+                <label for="eqMobile">Mobile number *</label>
+                <input id="eqMobile" type="tel" inputmode="tel" placeholder="+91 ">
+                <div class="error">Please enter a valid 10-digit Indian mobile number.</div>
+              </div>
+              <div class="field">
+                <label for="eqMsg">Your message *</label>
+                <textarea id="eqMsg" placeholder="How can we help?"></textarea>
+              </div>
+              <button class="btn btn-primary btn-block" type="submit">Send enquiry</button>
+              <p class="small muted" style="margin-top:10px">Enquiries are saved on this device and shown to the clinic when you visit or book. For anything urgent, please come to the clinic during opening hours. In a medical emergency, call 112.</p>
+            </form>
+            <div id="enquiryDone"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="data.js"></script>
+<script>
+  renderChrome("contact.html");
+  document.getElementById("mapEmbed").src = mapsEmbedUrl();
+  document.getElementById("dirBtn").href = mapsDirUrl();
+  document.getElementById("mapBtn").href = mapsSearchUrl();
+
+  /* If the clinic number is confirmed later, it appears here automatically */
+  if (hasPhone() || hasWhatsApp()) {
+    document.getElementById("phoneBlock").innerHTML =
+      (hasPhone() ? `Call us at <a href="${callHref()}"><strong>${phoneDisplay()}</strong></a> during clinic hours.` : "") +
+      (hasWhatsApp() ? ` You can also message us on WhatsApp — we reply during clinic hours.` : "");
+    document.getElementById("phoneActions").innerHTML =
+      (hasPhone() ? `<a class="btn btn-outline" href="${callHref()}">Call the clinic</a>` : "") +
+      (hasWhatsApp() ? `<a class="btn btn-whatsapp" href="${waHref()}" target="_blank" rel="noopener">Chat on WhatsApp</a>` : "") +
+      `<a class="btn btn-primary" href="book.html">Book an appointment</a>`;
+  }
+
+  document.getElementById("enquiryForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = document.getElementById("eqName").value.trim();
+    let d = document.getElementById("eqMobile").value.replace(/\D/g, "");
+    if (d.length === 12 && d.startsWith("91")) d = d.slice(2);
+    if (d.length === 11 && d.startsWith("0")) d = d.slice(1);
+    const msg = document.getElementById("eqMsg").value.trim();
+    let ok = true;
+    document.getElementById("e-name").classList.toggle("invalid", name.length < 3); if (name.length < 3) ok = false;
+    document.getElementById("e-mobile").classList.toggle("invalid", !/^[6-9]\d{9}$/.test(d)); if (!/^[6-9]\d{9}$/.test(d)) ok = false;
+    if (msg.length < 5) { alert("Please write a short message."); ok = false; }
+    if (!ok) return;
+    const list = JSON.parse(localStorage.getItem("gathrika_enquiries") || "[]");
+    list.push({ name, mobile: "+91 " + d, message: msg, at: new Date().toISOString() });
+    localStorage.setItem("gathrika_enquiries", JSON.stringify(list));
+    document.getElementById("enquiryForm").style.display = "none";
+    document.getElementById("enquiryDone").innerHTML =
+      `<div class="notice notice-info" style="margin:0">Thank you, ${name}. Your enquiry has been noted. For a confirmed time with the doctor, please also <a href="book.html">book an appointment</a> — the clinic confirms every booking on WhatsApp.</div>`;
+  });
+</script>
+</body>
+</html>
