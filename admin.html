@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clinic Admin | Gathrika Skin Clinic</title>
+<meta name="description" content="Staff dashboard for Gathrika Skin Clinic — appointments, blocked dates and enquiries.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232F5D50'/%3E%3Ctext x='32' y='44' font-family='Georgia' font-size='36' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<main>
+  <section class="section">
+    <div class="container admin-shell">
+
+      <!-- Logged-out view: login only -->
+      <div id="loginView" hidden>
+        <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto">
+          <h1>Clinic login</h1>
+          <p>Staff only. Sign in to see today's appointments, blocked dates and enquiries.</p>
+        </div>
+        <form id="loginForm" class="form-card admin-login" novalidate>
+          <div class="field">
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" type="email" autocomplete="username" placeholder="you@clinic.example">
+          </div>
+          <div class="field">
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" autocomplete="current-password">
+          </div>
+          <div class="notice notice-warn" id="loginError" hidden></div>
+          <button class="btn btn-primary btn-block" type="submit" id="loginBtn">Sign in</button>
+          <p class="small muted" style="margin-top:10px">Patients: please use the <a href="book.html">booking page</a> — no login is needed.</p>
+        </form>
+      </div>
+
+      <!-- Logged-in view -->
+      <div id="dashView" hidden>
+        <div class="admin-topbar">
+          <div>
+            <h1 style="margin:0">Clinic dashboard</h1>
+            <p class="muted" style="margin:2px 0 0">Signed in as <strong id="userEmail"></strong></p>
+          </div>
+          <button class="btn btn-outline" type="button" id="signOutBtn">Sign out</button>
+        </div>
+
+        <div class="card admin-card">
+          <div class="admin-row">
+            <h2 style="margin:0">Appointments</h2>
+            <span class="spacer"></span>
+            <label class="admin-date-label" for="apptDate">Date
+              <input type="date" id="apptDate">
+            </label>
+            <button class="btn btn-outline" type="button" id="todayBtn">Today</button>
+            <button class="btn btn-primary" type="button" id="csvBtn">Export CSV</button>
+          </div>
+          <div id="apptSummary" class="muted" style="margin-top:6px"></div>
+          <div id="apptArea" style="margin-top:10px"></div>
+        </div>
+
+        <div class="card admin-card">
+          <h2 style="margin-top:0">Blocked dates</h2>
+          <p class="muted">On a blocked date the booking page shows “Clinic closed on this date” and offers no slots.</p>
+          <form id="blockForm" class="admin-row" novalidate>
+            <label class="admin-date-label" for="blockDate">Date
+              <input type="date" id="blockDate" required>
+            </label>
+            <label class="admin-date-label grow" for="blockReason">Reason
+              <input type="text" id="blockReason" placeholder="e.g. Doctor on leave">
+            </label>
+            <button class="btn btn-primary" type="submit">Block date</button>
+          </form>
+          <div id="blockError"></div>
+          <div id="blockList" style="margin-top:10px"></div>
+        </div>
+
+        <div class="card admin-card">
+          <h2 style="margin-top:0">Enquiries</h2>
+          <p class="muted">Messages sent from the website contact form, newest first.</p>
+          <div id="enquiryList" style="margin-top:10px"></div>
+        </div>
+      </div>
+
+      <div id="adminLoading" class="muted" style="text-align:center;padding:30px 0">Loading…</div>
+
+    </div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="data.js"></script>
+<script src="backend.js"></script>
+<script src="admin.js"></script>
+<script>renderChrome("");</script>
+</body>
+</html>

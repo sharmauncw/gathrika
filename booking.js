@@ -1,11 +1,16 @@
 /* ============================================================
    Gathrika Skin Clinic — booking.js
    Multi-step appointment REQUEST widget (brief section 7).
-   There is no backend yet: submissions are stored in the
-   browser's localStorage as booking REQUESTS, and the clinic
-   confirms each appointment personally on WhatsApp.
+   Wired to the live Supabase backend (Nov 2026): slot
+   availability comes from the clinic's real bookings
+   (availability / is_blocked RPCs) and submitting INSERTs the
+   appointment so the clinic sees it in the admin dashboard.
+   A copy is also kept in this browser's localStorage as the
+   patient's own record. The clinic confirms each appointment
+   personally on WhatsApp.
    Steps: Service → Date → Time slot → Details + consent →
-   Confirmation. Includes reschedule / cancel by reference code.
+   Confirmation. Includes reschedule / cancel by reference code
+   (local record; the manage screen also offers WhatsApp).
    ============================================================ */
 
 const BOOKING_CONFIG = {
@@ -32,6 +37,36 @@ function slotTakenCount(dateISO, timeVal) {
   return loadBookings().filter(b =>
     b.date === dateISO && b.timeVal === timeVal &&
     (b.status === "Requested" || b.status === "Confirmed")).length;
+}
+
+/* ---------- server availability (Supabase RPCs) ----------
+   serverAvail = { date, blocked: bool|null, counts: { "HH:MM": n } }
+   Populated by fetchServerAvailability() when the slot step opens.
+   Counts come from the clinic's real appointment book; the local
+   copy is added on top so this device's own requests also count. */
+let serverAvail = null;
+async function fetchServerAvailability(iso) {
+  serverAvail = { date: iso, blocked: null, counts: {} };
+  if (!window.sbReady) return serverAvail;
+  const mine = serverAvail;
+  try {
+    const [blk, av] = await Promise.all([
+      window.sb.rpc("is_blocked", { p_date: iso }),
+      window.sb.rpc("availability", { p_date: iso })
+    ]);
+    if (!blk.error) mine.blocked = !!blk.data;
+    if (!av.error && Array.isArray(av.data)) {
+      av.data.forEach(r => {
+        const t = String(r.appt_time || "").slice(0, 5);
+        if (t) mine.counts[t] = Number(r.booked) || 0;
+      });
+    }
+  } catch (e) { /* leave blocked=null, counts={} — widget falls back to local counts */ }
+  return mine;
+}
+function serverTakenCount(dateISO, timeVal) {
+  if (serverAvail && serverAvail.date === dateISO) return serverAvail.counts[timeVal] || 0;
+  return 0;
 }
 
 /* ---------- date helpers (local time) ---------- */
@@ -78,7 +113,7 @@ function slotsForDate(iso) {
     const list = [];
     while (cursor < end) {
       const val = String(cursor.getHours()).padStart(2, "0") + ":" + String(cursor.getMinutes()).padStart(2, "0");
-      const full = slotTakenCount(iso, val) >= BOOKING_CONFIG.slotCapacity;
+      const full = Math.max(slotTakenCount(iso, val), serverTakenCount(iso, val)) >= BOOKING_CONFIG.slotCapacity;
       const tooSoon = isToday && cursor < earliest;
       list.push({ val, label: to12h(val), disabled: full || tooSoon, full });
       cursor.setMinutes(cursor.getMinutes() + BOOKING_CONFIG.slotMinutes);
@@ -193,13 +228,45 @@ function renderStepDate(panel) {
 
 /* ----- Step 3: time slot ----- */
 function renderStepSlots(panel) {
-  const groups = slotsForDate(wiz.date);
   panel.innerHTML = `<h2>Pick a time — ${prettyDate(wiz.date)}</h2>
-    <p class="muted">Slots are 15 minutes apart. Same-day slots open at least 1 hour from now. Fully requested slots are greyed out.</p>
+    <p class="muted">Checking the clinic's live availability…</p>`;
+  navRow(panel, {
+    back: () => { wiz.step = 2; renderWizard(); },
+    nextDisabled: true,
+    onNext: () => { wiz.step = 4; renderWizard(); }
+  });
+  fetchServerAvailability(wiz.date).then(() => {
+    if (wiz.step !== 3 || !document.body.contains(panel)) return; // user moved on
+    renderSlotChoices(panel);
+  });
+}
+
+function renderSlotChoices(panel) {
+  if (serverAvail && serverAvail.blocked) {
+    panel.innerHTML = `<h2>Pick a time — ${prettyDate(wiz.date)}</h2>
+      <div class="notice notice-warn"><strong>Clinic closed on this date.</strong>
+      The clinic is not seeing patients on ${prettyDate(wiz.date)}. Please pick another date — the clinic is open Monday to Saturday.</div>`;
+    navRow(panel, {
+      back: () => { wiz.step = 2; renderWizard(); },
+      nextDisabled: true,
+      onNext: () => {}
+    });
+    const nx = document.getElementById("bkNext");
+    if (nx) nx.style.display = "none";
+    return;
+  }
+  const groups = slotsForDate(wiz.date);
+  /* If the previously chosen slot has filled up meanwhile, drop it */
+  if (wiz.timeVal) {
+    const chosen = groups.flatMap(g => g.list).find(s => s.val === wiz.timeVal);
+    if (!chosen || chosen.disabled) { wiz.timeVal = null; wiz.timeLabel = null; }
+  }
+  panel.innerHTML = `<h2>Pick a time — ${prettyDate(wiz.date)}</h2>
+    <p class="muted">Slots are 15 minutes apart. Same-day slots open at least 1 hour from now. Full slots are marked and cannot be chosen.</p>
     ${groups.map(g => `
       <div class="slot-session">${g.label}</div>
       <div class="slot-grid">
-        ${g.list.map(s => `<button type="button" class="slot-btn ${wiz.timeVal === s.val ? "selected" : ""}" data-val="${s.val}" data-label="${s.label}" ${s.disabled ? "disabled title='Slot full or unavailable'" : ""}>${s.label}</button>`).join("")}
+        ${g.list.map(s => `<button type="button" class="slot-btn ${wiz.timeVal === s.val ? "selected" : ""}" data-val="${s.val}" data-label="${s.label}" ${s.disabled ? "disabled title='Slot full or unavailable'" : ""}>${s.label}${s.full ? " · Full" : ""}</button>`).join("")}
       </div>`).join("")}
     <p class="small muted" style="margin-top:12px">Morning 11:00 AM – 1:00 PM · Evening 5:00 PM – 8:00 PM</p>`;
   panel.querySelectorAll("[data-val]").forEach(btn => {
@@ -313,25 +380,67 @@ function validateDetails() {
   return true;
 }
 
-function submitBooking() {
-  const list = loadBookings();
+async function submitBooking() {
+  const nextBtn = document.getElementById("bkNext");
+  const panel = document.getElementById("bkPanel");
+  if (nextBtn) { nextBtn.disabled = true; nextBtn.textContent = "Sending…"; }
+  let errBox = document.getElementById("submitError");
+  if (errBox) errBox.remove();
+
   const s = serviceBySlug(wiz.service);
+  const d = wiz.details;
+  const ref = wiz.editingRef ? wiz.editingRef : refCode();
+
+  /* 1) Save to the clinic's system first — no server row, no confirmation. */
+  if (window.sbReady) {
+    let insErr = null;
+    try {
+      const { error } = await window.sb.from("appointments").insert({
+        ref_code: ref,
+        service_slug: wiz.service,
+        service_name: s.name,
+        appt_date: wiz.date,
+        appt_time: wiz.timeVal + ":00",
+        patient_name: d.name,
+        phone: d.mobile,
+        age: d.age,
+        gender: d.gender,
+        is_new: d.visitType === "New patient",
+        notes: (wiz.editingRef ? "Rescheduled online. " : "") + (d.concern || ""),
+        status: "booked",
+        source: "web",
+        consent_at: new Date().toISOString()
+      });
+      insErr = error;
+    } catch (e) { insErr = e; }
+    if (insErr) {
+      if (nextBtn) { nextBtn.disabled = false; nextBtn.textContent = wiz.editingRef ? "Save new time" : "Request appointment"; }
+      if (panel) panel.insertAdjacentHTML("beforeend",
+        `<div class="notice notice-warn" id="submitError" style="margin-top:14px"><strong>We could not send your request to the clinic just now.</strong>
+         Nothing has been booked. Please check your connection and try again — or message the clinic directly on
+         <a href="${waHref("Hi, I tried to book an appointment at Gathrika Skin Clinic (" + s.name + ", " + prettyDate(wiz.date) + ", " + wiz.timeLabel + ") but the website could not send it. Please help me book.")}" target="_blank" rel="noopener">WhatsApp</a>.</div>`);
+      return;
+    }
+  }
+
+  /* 2) The patient's own copy on this device */
+  const list = loadBookings();
   if (wiz.editingRef) {
     const b = list.find(x => x.ref === wiz.editingRef);
     if (b) {
       b.serviceSlug = wiz.service; b.serviceName = s.name;
       b.date = wiz.date; b.timeVal = wiz.timeVal; b.timeLabel = wiz.timeLabel;
-      b.name = wiz.details.name; b.mobile = wiz.details.mobile; b.age = wiz.details.age;
-      b.gender = wiz.details.gender; b.visitType = wiz.details.visitType; b.concern = wiz.details.concern;
+      b.name = d.name; b.mobile = d.mobile; b.age = d.age;
+      b.gender = d.gender; b.visitType = d.visitType; b.concern = d.concern;
       b.status = "Requested"; b.updatedAt = new Date().toISOString();
       wiz.confirmRef = b.ref; wiz.rescheduled = true;
     }
   } else {
     const booking = {
-      ref: refCode(),
+      ref,
       serviceSlug: wiz.service, serviceName: s.name,
       date: wiz.date, timeVal: wiz.timeVal, timeLabel: wiz.timeLabel,
-      ...wiz.details,
+      ...d,
       status: "Requested",
       createdAt: new Date().toISOString()
     };
@@ -404,6 +513,8 @@ function downloadICS(b) {
 
 /* ---------- manage: reschedule / cancel ---------- */
 function initManage() {
+  const waLink = document.getElementById("mgWhatsApp");
+  if (waLink && hasWhatsApp()) waLink.href = waHref("Hi, I would like to change or cancel my appointment at Gathrika Skin Clinic.");
   const btn = document.getElementById("mgFind");
   if (!btn) return;
   btn.addEventListener("click", () => {

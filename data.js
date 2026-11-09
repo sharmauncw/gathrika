@@ -16,7 +16,13 @@ const CONFIG = {
   WHATSAPP: "919392631157",  // clinic WhatsApp — same number (confirmed Nov 8, 2026, via Pavan)
   PHONE_DISPLAY: "+91 93926 31157",
   EMAIL: "",      // [CONFIRM] clinic email
-  MAPS_QUERY: "Gathrika Skin Clinic, 7-4 Main Road, Above Union Bank, Beside Sampoorna Hotel, Medipally, Peerzadiguda, Hyderabad 500098"
+  MAPS_QUERY: "Gathrika Skin Clinic, 7-4 Main Road, Above Union Bank, Beside Sampoorna Hotel, Medipally, Peerzadiguda, Hyderabad 500098",
+  /* Live backend (Supabase) — wired Nov 2026. The publishable key is
+     safe to expose in the browser: row-level security limits anon
+     visitors to inserting appointments/enquiries and calling the
+     availability RPCs. Staff data is only reachable after login. */
+  SUPABASE_URL: "https://ypmxiooqoxewmxzfjwiq.supabase.co",
+  SUPABASE_KEY: "sb_publishable_WhhAgQleiwZxnjQ5scGQnA_kcGSeNjy"
 };
 
 const CLINIC = {
@@ -535,7 +541,7 @@ function renderChrome(activePage) {
       </div>
       <div class="footer-legal">
         <p>© 2026 Gathrika Skin Clinic. Information on this website is for general awareness and is not a substitute for an in-person medical consultation.</p>
-        <p class="small">Website by Sharma Digital Studio</p>
+        <p class="small">Website by Sharma Digital Studio · <a href="admin.html">Clinic login</a></p>
       </div>
     </div>
   </footer>

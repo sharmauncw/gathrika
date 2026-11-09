@@ -1,0 +1,60 @@
+/* Gathrika Skin Clinic — admin.css
+   Admin dashboard extras, built on styles.css tokens only. */
+
+.admin-shell { max-width: 1020px; }
+.admin-login { max-width: 440px; margin: 0 auto; }
+.admin-topbar {
+  display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.admin-topbar .btn { margin-left: auto; }
+.admin-card { margin-bottom: 20px; }
+.admin-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.admin-row .spacer { flex: 1; }
+.admin-date-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 600; font-size: .92rem;
+}
+.admin-date-label input {
+  font: inherit; padding: 9px 10px; border: 1px solid var(--border);
+  border-radius: 10px; background: #fff; color: var(--text); min-height: 44px;
+}
+.admin-date-label.grow { flex: 1; min-width: 200px; }
+.admin-date-label.grow input { flex: 1; }
+.btn-small { min-height: 38px; padding: 7px 14px; font-size: .88rem; }
+
+.admin-table-wrap { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+.admin-table th, .admin-table td {
+  padding: 9px 8px; border-bottom: 1px solid var(--border);
+  text-align: left; vertical-align: top;
+}
+.admin-table thead th {
+  color: var(--muted); font-weight: 600; white-space: nowrap;
+  border-bottom: 2px solid var(--border);
+}
+.status-select {
+  font: inherit; font-size: .9rem; padding: 7px 8px; min-height: 40px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: #fff; color: var(--text);
+}
+.enquiry-item {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 10px; background: #fff;
+}
+
+@media (max-width: 640px) {
+  .admin-table thead { display: none; }
+  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
+  .admin-table tr {
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 8px 10px; margin-bottom: 10px; background: #fff;
+  }
+  .admin-table td { border-bottom: none; padding: 4px 2px; }
+  .admin-table td::before {
+    content: attr(data-label); display: block;
+    font-size: .72rem; font-weight: 700; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .status-select { width: 100%; }
+}

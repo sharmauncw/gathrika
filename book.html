@@ -35,12 +35,15 @@
         </div>
         <button class="btn btn-primary" type="button" id="mgFind">Find my booking</button>
         <div id="mgResult" style="margin-top:14px"></div>
-        <p class="small muted" style="margin-top:14px">Note: bookings made on this device are stored in this browser. If you booked on another phone, please contact the clinic via the <a href="contact.html">contact page</a> to change your appointment.</p>
+        <p class="small" style="margin-top:14px">To change or cancel, you can also message the clinic on <a id="mgWhatsApp" href="contact.html" target="_blank" rel="noopener">WhatsApp</a>.</p>
+        <p class="small muted" style="margin-top:6px">Note: bookings made on this device are stored in this browser. If you booked on another phone, please contact the clinic via WhatsApp or the <a href="contact.html">contact page</a> to change your appointment.</p>
       </div>
     </div>
   </section>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="data.js"></script>
+<script src="backend.js"></script>
 <script src="booking.js"></script>
 <script>renderChrome("book.html");</script>
 </body>

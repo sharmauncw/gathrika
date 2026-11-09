@@ -70,7 +70,7 @@
                 <textarea id="eqMsg" placeholder="How can we help?"></textarea>
               </div>
               <button class="btn btn-primary btn-block" type="submit">Send enquiry</button>
-              <p class="small muted" style="margin-top:10px">Enquiries are saved on this device and shown to the clinic when you visit or book. For anything urgent, please come to the clinic during opening hours. In a medical emergency, call 112.</p>
+              <p class="small muted" style="margin-top:10px">Your enquiry is sent to the clinic. For anything urgent, please come to the clinic during opening hours or call / WhatsApp us. In a medical emergency, call 112.</p>
             </form>
             <div id="enquiryDone"></div>
           </div>
@@ -79,7 +79,9 @@
     </div>
   </section>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="data.js"></script>
+<script src="backend.js"></script>
 <script>
   renderChrome("contact.html");
   document.getElementById("mapEmbed").src = mapsEmbedUrl();
@@ -97,7 +99,7 @@
       `<a class="btn btn-primary" href="book.html">Book an appointment</a>`;
   }
 
-  document.getElementById("enquiryForm").addEventListener("submit", e => {
+  document.getElementById("enquiryForm").addEventListener("submit", async e => {
     e.preventDefault();
     const name = document.getElementById("eqName").value.trim();
     let d = document.getElementById("eqMobile").value.replace(/\D/g, "");
@@ -109,12 +111,23 @@
     document.getElementById("e-mobile").classList.toggle("invalid", !/^[6-9]\d{9}$/.test(d)); if (!/^[6-9]\d{9}$/.test(d)) ok = false;
     if (msg.length < 5) { alert("Please write a short message."); ok = false; }
     if (!ok) return;
+    const phone = "+91 " + d;
+    /* Keep a copy on this device, as before */
     const list = JSON.parse(localStorage.getItem("gathrika_enquiries") || "[]");
-    list.push({ name, mobile: "+91 " + d, message: msg, at: new Date().toISOString() });
+    list.push({ name, mobile: phone, message: msg, at: new Date().toISOString() });
     localStorage.setItem("gathrika_enquiries", JSON.stringify(list));
+    /* Send it to the clinic's inbox (Supabase enquiries table) */
+    let sent = false;
+    if (window.sbReady) {
+      try {
+        const { error } = await window.sb.from("enquiries").insert({ name, phone, message: msg });
+        sent = !error;
+      } catch (err) { sent = false; }
+    }
     document.getElementById("enquiryForm").style.display = "none";
-    document.getElementById("enquiryDone").innerHTML =
-      `<div class="notice notice-info" style="margin:0">Thank you, ${name}. Your enquiry has been noted. For a confirmed time with the doctor, please also <a href="book.html">book an appointment</a> — the clinic confirms every booking on WhatsApp.</div>`;
+    document.getElementById("enquiryDone").innerHTML = sent
+      ? `<div class="notice notice-info" style="margin:0">Thank you, ${name}. Your enquiry has been sent to the clinic. For a confirmed time with the doctor, please also <a href="book.html">book an appointment</a> — the clinic confirms every booking on WhatsApp.</div>`
+      : `<div class="notice notice-info" style="margin:0">Thank you, ${name}. Your enquiry has been noted on this device — we could not send it to the clinic just now, so for anything time-sensitive please call or WhatsApp us. For a confirmed time with the doctor, please <a href="book.html">book an appointment</a>.</div>`;
   });
 </script>
 </body>
