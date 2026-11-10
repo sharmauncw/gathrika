@@ -13,16 +13,16 @@
 </head>
 <body>
 <main>
-  <section class="section">
+  <section class="section" style="padding-top:26px">
     <div class="container">
-      <div class="section-head">
+      <div class="page-head">
         <h1>Products at the clinic</h1>
-        <p>These products are dispensed at Gathrika Skin Clinic as part of treatment plans. This is a showroom, not an online shop — there is no online payment. Ask about a product at your visit, or send an enquiry and the clinic will confirm the brand and price currently in stock.</p>
+        <p>Doctor-recommended care, dispensed at the clinic as part of your treatment plan. No online payment — enquire on WhatsApp or ask at your visit.</p>
       </div>
-      <img class="hero-img" src="assets/products.webp" alt="Skin and hair care products dispensed at Gathrika Skin Clinic" style="margin-bottom:24px">
+      <img class="banner-img" src="assets/products.webp" alt="Skin and hair care products dispensed at Gathrika Skin Clinic" style="margin:14px 0 20px">
       <div class="filter-bar" id="productFilters" role="group" aria-label="Filter products"></div>
       <div class="grid grid-3" id="productGrid"></div>
-      <div class="disclaimer-box"><strong>Please note:</strong> Product brands stocked at the clinic may vary. Prescription items are dispensed only after consultation, and only for the patient they are prescribed to. Always follow the usage directions given with your prescription.</div>
+      <div class="disclaimer-box"><strong>Please note:</strong> Brands in stock may vary. Prescription items are dispensed only after consultation, and only for the patient they are prescribed to.</div>
     </div>
   </section>
 
@@ -55,20 +55,20 @@
   }
 
   function enquireLabel(p) {
-    return p.rxOnly ? "Available after consultation" : "Enquire on WhatsApp";
+    return p.rxOnly ? "Consult first" : "Enquire on WhatsApp";
   }
 
   function renderGrid() {
     const items = PRODUCTS.filter(p => active === "all" || p.concerns.includes(active));
     grid.innerHTML = items.map(p => `
-      <article class="card" id="card-${p.slug}">
-        <div><span class="chip chip-accent">${p.category}</span> ${p.rxOnly ? '<span class="chip chip-consult">Prescription</span>' : ""}</div>
+      <article class="card tcard" id="card-${p.slug}">
+        <div class="art-band ${p.category === 'Sunscreens' || p.category === 'Pigmentation Care' ? 'art-aesthetic' : ''}"><span class="art-medal">${iconSvg(productIcon(p), 27)}</span>${p.rxOnly ? '<span class="art-chip"><span class="chip chip-consult">Prescription</span></span>' : ""}</div>
         <h3>${p.name}</h3>
-        <p>${p.use}</p>
-        <p class="small muted" style="margin:0">${p.size} · For: ${p.skinTypes.join(", ")}</p>
-        <div class="card-foot">
-          <a class="btn btn-outline" style="min-height:44px;padding:9px 16px" href="products.html#${p.slug}">Details</a>
-          <a class="btn ${p.rxOnly ? "btn-outline" : "btn-primary"}" style="min-height:44px;padding:9px 16px"
+        <p class="clamp2">${p.use}</p>
+        <p class="small muted" style="margin:0">${p.size} · ${p.skinTypes.join(", ")}</p>
+        <div class="tcard-foot">
+          <a class="go" href="products.html#${p.slug}">Details ${iconSvg("arrow", 16)}</a>
+          <a class="btn ${p.rxOnly ? "btn-outline" : "btn-primary"} btn-sm book-mini"
              href="${p.rxOnly ? "book.html?service=dermatology-consultation" : waHref("Hi, I'd like to know about " + p.name + " at Gathrika Skin Clinic.")}"
              ${!p.rxOnly && hasWhatsApp() ? 'target="_blank" rel="noopener"' : ""}>${enquireLabel(p)}</a>
         </div>
@@ -79,7 +79,8 @@
     document.getElementById("productDetail").hidden = false;
     document.getElementById("productDetailContent").innerHTML = `
       <div class="card">
-        <div><span class="chip chip-accent">${p.category}</span> ${p.rxOnly ? '<span class="chip chip-consult">Prescription — after consultation</span>' : ""}</div>
+        <div class="art-band ${p.category === 'Sunscreens' || p.category === 'Pigmentation Care' ? 'art-aesthetic' : ''}" style="margin-bottom:14px"><span class="art-medal">${iconSvg(productIcon(p), 27)}</span>${p.rxOnly ? '<span class="art-chip"><span class="chip chip-consult">Prescription — after consultation</span></span>' : ""}</div>
+        <span class="chip chip-accent">${p.category}</span>
         <h2 style="margin-top:6px">${p.name}</h2>
         <p>${p.use}</p>
         <table class="info-table">

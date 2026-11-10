@@ -13,46 +13,39 @@
 </head>
 <body>
 <main>
-  <section class="section">
+  <section class="section" style="padding-top:26px">
     <div class="container">
-      <div class="section-head">
-        <h1>Reviews &amp; patient stories</h1>
-        <p>We publish ratings exactly as they appear on public platforms, and patient stories only with attribution. We never write, buy or edit reviews.</p>
+      <div class="page-head">
+        <h1>Reviews</h1>
+        <p>Ratings exactly as they appear on public platforms. We never write, buy or edit reviews.</p>
       </div>
 
-      <div class="rating-summary">
-        <div class="card" style="text-align:center;align-items:center">
-          <div class="rating-big">4.8 ★</div>
-          <p style="margin:0"><strong>Justdial — clinic</strong><br><span class="muted">232 reviews</span></p>
-        </div>
-        <div class="card" style="text-align:center;align-items:center">
-          <div class="rating-big">4.7 ★</div>
-          <p style="margin:0"><strong>Justdial — doctor</strong><br><span class="muted">4 ratings</span></p>
-        </div>
-        <div class="card" style="text-align:center;align-items:center">
-          <div class="rating-big">2</div>
-          <p style="margin:0"><strong>Practo patient stories</strong><br><span class="muted">Both recommend the doctor</span></p>
+      <div class="rating-band" style="margin-top:14px">
+        <div><div class="rating-big" id="rb-score"></div><div class="stars" aria-hidden="true" id="rb-stars"></div></div>
+        <div>
+          <strong style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--primary-dark)">Justdial — the clinic</strong>
+          <div class="rb-sub" id="rb-sub"></div>
         </div>
       </div>
+      <div class="stat-strip" style="grid-template-columns:repeat(2,1fr)">
+        <div class="stat"><span class="stat-ic" id="st-doctor-ic"></span><div><strong id="st-doctor"></strong><span>Justdial — the doctor</span></div></div>
+        <div class="stat"><span class="stat-ic" id="st-practo-ic"></span><div><strong>2 stories</strong><span>Practo — both recommend the doctor</span></div></div>
+      </div>
 
-      <h2 style="margin-top:34px">Verified patient stories (Practo)</h2>
+      <h2 style="margin-top:30px">Patient stories (Practo)</h2>
       <div class="grid grid-2" id="stories"></div>
 
-      <h2 style="margin-top:34px">What patients mention most</h2>
-      <p id="themes"></p>
+      <h2 style="margin-top:30px">Patients mention most</h2>
+      <p id="themes" style="margin:0"></p>
 
-      <!-- RESULTS PLACEHOLDER -->
-      <h2 style="margin-top:34px">Patient results</h2>
-      <div class="results-placeholder">
-        <h3>Patient results gallery — coming soon</h3>
-        <p class="muted" style="max-width:38em;margin:0 auto">Before-and-after photographs will appear here only when patients have given written consent for their images to be published. Ask the doctor during your consultation about realistic outcomes for your concern.</p>
+      <div class="results-slim">
+        <span class="stat-ic" id="rs-ic"></span>
+        <span><strong>Patient results:</strong> photos are shared only with written consent — results vary from person to person, and nothing here is a promise of an outcome.</span>
       </div>
-      <div class="disclaimer-box"><strong>Please note:</strong> Results vary from person to person. Images of actual patients are shared only with written consent, and no result shown or described on this website is a promise or assurance of the outcome of any treatment.</div>
 
-      <div class="card" style="margin-top:26px">
+      <div class="card">
         <h2>Visited us? Share your experience</h2>
-        <p>Honest reviews help neighbours find the right doctor. Our Google review link will appear here once the clinic's Google Business Profile is set up — until then, you can review us on Justdial or Practo, where the clinic is already listed.</p>
-        <p class="small muted" style="margin:0">If anything about your visit was not right, we would rather hear it directly — please use the <a href="contact.html">contact page</a> and the doctor will look into it personally.</p>
+        <p style="margin:0">Review us on Justdial or Practo — honest reviews help neighbours find the right doctor. If anything about your visit was not right, tell us directly on the <a href="contact.html">contact page</a> and the doctor will look into it personally.</p>
       </div>
     </div>
   </section>
@@ -60,9 +53,16 @@
 <script src="data.js"></script>
 <script>
   renderChrome("reviews.html");
+  document.getElementById("rb-score").textContent = CLINIC.ratingJustdial.score;
+  document.getElementById("rb-stars").innerHTML = starsHtml(5);
+  document.getElementById("rb-sub").textContent = CLINIC.ratingJustdial.count + " patient reviews";
+  document.getElementById("st-doctor").textContent = CLINIC.ratingDoctor.score + " / 5 · " + CLINIC.ratingDoctor.count + " ratings";
+  document.getElementById("st-doctor-ic").innerHTML = iconSvg("star", 21);
+  document.getElementById("st-practo-ic").innerHTML = iconSvg("check", 21);
+  document.getElementById("rs-ic").innerHTML = iconSvg("shield", 18);
   document.getElementById("stories").innerHTML = TESTIMONIALS.map(t => `
     <article class="card quote-card">
-      <div class="stars" aria-hidden="true">★★★★★</div>
+      <div class="stars" aria-hidden="true">${starsHtml(5)}</div>
       <blockquote>${t.quote}</blockquote>
       <p class="small" style="margin:0"><strong>${t.name}</strong> — ${t.treatment}<br><span class="muted">${t.source}</span></p>
     </article>`).join("");

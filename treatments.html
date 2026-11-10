@@ -14,20 +14,20 @@
 <body>
 <main>
   <!-- CATALOG VIEW -->
-  <section class="section" id="catalogView">
+  <section class="section" id="catalogView" style="padding-top:26px">
     <div class="container">
-      <div class="section-head">
-        <h1>Treatments at Gathrika Skin Clinic</h1>
-        <p>Doctor-planned care for skin, hair and nails in Medipally, Hyderabad. Tap any treatment for full details — what it is, who it suits, sessions, downtime and aftercare.</p>
+      <div class="page-head">
+        <h1>Treatments</h1>
+        <p>Doctor-planned care for skin, hair &amp; nails. Tap a treatment for full details.</p>
       </div>
       <div class="filter-bar" id="filterBar" role="group" aria-label="Filter treatments by category"></div>
       <div class="grid grid-3" id="treatmentGrid"></div>
-      <div class="disclaimer-box"><strong>Medical information:</strong> Treatment information on this page is general educational information only. It is not a substitute for an in-person consultation, and suitability for any procedure is decided by the doctor after examining you.</div>
+      <div class="disclaimer-box"><strong>Medical information:</strong> Treatment details here are general educational information only — suitability for any procedure is decided by the doctor after examining you.</div>
     </div>
   </section>
 
   <!-- DETAIL VIEW -->
-  <section class="section" id="detailView" hidden>
+  <section class="section" id="detailView" hidden style="padding-top:22px">
     <div class="container" style="max-width:860px">
       <p><a href="treatments.html" id="backToCatalog">← All treatments</a></p>
       <div id="detailContent"></div>
@@ -60,16 +60,16 @@
   function renderGrid() {
     const items = SERVICES.filter(matchesFilter);
     grid.innerHTML = items.map(s => `
-      <article class="card">
-        <div>${statusChip(s)} <span class="chip chip-accent">${s.category}</span></div>
+      <article class="card tcard">
+        <div class="art-band ${categoryClass(s.category)}"><span class="art-medal">${iconSvg(s.icon, 27)}</span><span class="art-chip">${statusChip(s) || `<span class="chip">${s.category}</span>`}</span></div>
         <h3>${s.name}</h3>
-        <p>${s.summary}</p>
-        <p class="price-note">${s.priceDisplay} · <span class="muted" style="font-weight:500">${s.sessions}</span></p>
-        <div class="card-foot">
-          <a class="btn btn-outline" style="min-height:44px;padding:9px 16px" href="treatments.html#${s.slug}">Full details</a>
+        <p>${s.short}</p>
+        <div class="tcard-foot">
+          <span class="fee">${s.priceDisplay}</span>
+          <a class="go" href="treatments.html#${s.slug}">Details ${iconSvg("arrow", 16)}</a>
           ${s.bookable
-            ? `<a class="btn btn-primary" style="min-height:44px;padding:9px 16px" href="book.html?service=${s.slug}">Book</a>`
-            : `<a class="btn btn-primary" style="min-height:44px;padding:9px 16px" href="book.html?service=dermatology-consultation">Book a consultation</a>`}
+            ? `<a class="btn btn-primary btn-sm book-mini" href="book.html?service=${s.slug}">Book</a>`
+            : `<a class="btn btn-primary btn-sm book-mini" href="book.html?service=dermatology-consultation">Book</a>`}
         </div>
       </article>`).join("") ||
       `<p class="muted">No treatments in this category yet.</p>`;
@@ -83,19 +83,16 @@
     document.title = s.name + " in Medipally, Hyderabad | Gathrika Skin Clinic";
     const related = (s.relatedProducts || []).map(productBySlug).filter(Boolean);
     document.getElementById("detailContent").innerHTML = `
-      <span class="chip chip-accent">${s.category}</span> ${statusChip(s)}
-      <h1 style="margin-top:10px">${s.name}</h1>
-      <p style="font-size:1.08rem">${s.summary}</p>
-      <img class="hero-img" src="assets/treatment.webp" alt="Treatment at Gathrika Skin Clinic, Medipally" style="margin:14px 0 22px">
-      <div class="card" style="margin-bottom:20px">
-        <table class="info-table">
-          <tr><th>Sessions</th><td>${s.sessions}</td></tr>
-          <tr><th>Session duration</th><td>About ${s.durationMin} minutes</td></tr>
-          <tr><th>Downtime</th><td>${s.downtime}</td></tr>
-          <tr><th>Results timeline</th><td>${s.resultsTimeline}</td></tr>
-          <tr><th>Fee</th><td>${s.priceDisplay}${s.slug === "dermatology-consultation" ? "" : " — consultation Rs 300 applies for assessment"}</td></tr>
-        </table>
+      <div class="art-band detail-art ${categoryClass(s.category)}"><span class="art-medal">${iconSvg(s.icon, 32)}</span><span class="art-chip">${statusChip(s) || `<span class="chip">${s.category}</span>`}</span></div>
+      <h1 style="margin-top:16px">${s.name}</h1>
+      <p style="font-size:1.06rem;margin-top:4px">${s.summary}</p>
+      <div class="fact-tiles">
+        <div class="fact-tile"><div class="fk">${iconSvg("layers", 14)} Sessions</div><div class="fv">${s.sessions}</div></div>
+        <div class="fact-tile"><div class="fk">${iconSvg("clock", 14)} Duration</div><div class="fv">About ${s.durationMin} minutes</div></div>
+        <div class="fact-tile"><div class="fk">${iconSvg("check", 14)} Downtime</div><div class="fv">${s.downtime}</div></div>
+        <div class="fact-tile"><div class="fk">${iconSvg("plus-circle", 14)} Fee</div><div class="fv">${s.priceDisplay}</div></div>
       </div>
+      <p class="small muted" style="margin:2px 0 0">Results timeline: ${s.resultsTimeline}${s.slug === "dermatology-consultation" ? "" : " · Consultation Rs 300 applies for assessment."}</p>
       <h2>Who is it for?</h2><p>${s.whoFor}</p>
       <h2>How it works</h2><p>${s.howItWorks}</p>
       <h2>Aftercare</h2><p>${s.aftercare}</p>
@@ -103,20 +100,20 @@
       <h2>Please note</h2><p>${s.contraindications}</p>
       ${related.length ? `<h2>Often used with this treatment</h2>
         <div class="grid grid-2">${related.map(p => `
-          <a class="card" href="products.html#${p.slug}" style="color:inherit">
-            <h3>${p.name}</h3><p>${p.use}</p>
-            <span style="color:var(--primary);font-weight:600">${p.rxOnly ? "Available after consultation" : "Ask at the clinic"} →</span>
+          <a class="mini-card" href="products.html#${p.slug}">
+            <span class="stat-ic">${iconSvg(productIcon(p), 21)}</span>
+            <span><h3>${p.name}</h3><p>${p.rxOnly ? "Available after consultation" : "Ask at the clinic"}</p></span>
           </a>`).join("")}</div>` : ""}
       <h2 style="margin-top:26px">Questions</h2>
       ${faqHtml(s.faqs)}
       <div class="card" style="margin-top:22px;text-align:center;align-items:center;padding:28px 22px">
         <h2 style="margin-bottom:4px">${s.bookable ? "Book this treatment" : "Start with a consultation"}</h2>
         <p class="muted" style="max-width:32em">${s.bookable
-          ? "Request an appointment online — the clinic confirms on WhatsApp. Pay at clinic."
-          : "This treatment is planned after examination. Book a consultation and the doctor will assess and plan it with you."}</p>
+          ? "Request online — the clinic confirms on WhatsApp. Pay at clinic."
+          : "Planned after examination. Book a consultation and the doctor will assess and plan it with you."}</p>
         <a class="btn btn-primary" href="book.html?service=${s.bookable ? s.slug : "dermatology-consultation"}">${s.bookable ? "Book — " + s.name : "Book a consultation (Rs 300)"}</a>
       </div>
-      <p class="medical-note"><strong>Medical disclaimer:</strong> The information on this page is for general education only and is not a substitute for a medical consultation, diagnosis or treatment. Outcomes vary from person to person, and no outcome is promised or assured. Please consult Dr. G. Kiranmayee in person for advice about your condition.</p>`;
+      <p class="medical-note"><strong>Medical disclaimer:</strong> This page is for general education only and is not a substitute for a medical consultation, diagnosis or treatment. Outcomes vary from person to person, and no outcome is promised or assured. Please consult Dr. G. Kiranmayee in person for advice about your condition.</p>`;
     document.getElementById("catalogView").hidden = true;
     document.getElementById("detailView").hidden = false;
     window.scrollTo({ top: 0 });

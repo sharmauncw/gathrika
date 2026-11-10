@@ -13,43 +13,44 @@
 </head>
 <body>
 <main>
-  <section class="section">
+  <section class="section" style="padding-top:26px">
     <div class="container">
-      <div class="section-head">
+      <div class="page-head">
         <h1>Contact &amp; directions</h1>
-        <p>The fastest way to reach us is to book online — or just walk in during clinic hours.</p>
+        <p>Book online, call, or just walk in during clinic hours.</p>
       </div>
+
+      <div class="action-tiles" style="margin-top:16px">
+        <a class="action-tile" id="tileCall" href="#"><span class="stat-ic" id="tileCallIc"></span>Call</a>
+        <a class="action-tile wa" id="tileWa" href="#" target="_blank" rel="noopener"><span class="stat-ic" id="tileWaIc"></span>WhatsApp</a>
+        <a class="action-tile book" href="book.html"><span class="stat-ic" id="tileBookIc"></span>Book</a>
+      </div>
+      <p class="small muted" style="margin:0 0 18px;text-align:center" id="phoneLine"></p>
+
       <div class="grid grid-2" style="align-items:start">
         <div>
-          <iframe class="map-embed" id="mapEmbed" title="Map — Gathrika Skin Clinic, Medipally" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          <div class="hero-ctas">
+          <iframe class="map-embed" id="mapEmbed" title="Map — Gathrika Skin Clinic, Medipally" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="height:280px"></iframe>
+          <div class="hero-actions" style="margin-top:12px">
             <a class="btn btn-primary" id="dirBtn" href="#" target="_blank" rel="noopener">Get directions</a>
-            <a class="btn btn-outline" id="mapBtn" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+            <a class="btn btn-outline" id="mapBtn" href="#" target="_blank" rel="noopener">Open in Maps</a>
           </div>
-          <div class="card" style="margin-top:8px">
-            <h3>Address</h3>
-            <p style="margin:0">Gathrika Skin Clinic<br>
+          <div class="info-card" style="margin-top:16px">
+            <div class="info-head"><span class="stat-ic" id="addrIc"></span><h3>Address</h3></div>
+            <p style="margin:0"><strong>Gathrika Skin Clinic</strong><br>
             7-4, Main Road, Above Union Bank,<br>
             Beside Sampoorna Hotel, Medipally,<br>
             Peerzadiguda, Hyderabad, Telangana 500098</p>
-            <p class="small muted" style="margin-top:8px">Landmarks: above Union Bank, beside Sampoorna Hotel, at the Medipally bus stop. Areas served: Medipally, Boduppal, Peerzadiguda, Chengicherla, Uppal, Narapally, Pocharam, Ghatkesar.</p>
+            <p class="small muted" style="margin:8px 0 0">At the Medipally bus stop. Serving Medipally, Boduppal, Peerzadiguda, Chengicherla, Uppal, Narapally, Pocharam &amp; Ghatkesar.</p>
           </div>
         </div>
         <div>
-          <div class="card">
-            <h3>Clinic hours</h3>
-            <table class="info-table">
-              <tr><th>Mon – Sat (Morning)</th><td>11:00 AM – 1:00 PM</td></tr>
-              <tr><th>Mon – Sat (Evening)</th><td>5:00 PM – 8:00 PM</td></tr>
-              <tr><th>Sunday</th><td>Closed</td></tr>
-              <tr><th>Consultation</th><td>Rs 300 · pay at clinic</td></tr>
-            </table>
-          </div>
-          <div class="card" style="margin-top:16px">
-            <h3>Call &amp; WhatsApp</h3>
-            <p id="phoneBlock">Call or WhatsApp us at <a href="tel:+919392631157"><strong>+91 93926 31157</strong></a> during clinic hours. You can also book online — the clinic confirms every booking request on WhatsApp.</p>
-            <div class="hero-ctas" id="phoneActions">
-              <a class="btn btn-primary" href="book.html">Book an appointment</a>
+          <div class="info-card">
+            <div class="info-head"><span class="stat-ic" id="hrsIc"></span><h3>Clinic hours</h3></div>
+            <div class="info-lines">
+              <div class="info-line"><span class="k">Morning · Mon – Sat</span><span class="v">11 AM – 1 PM</span></div>
+              <div class="info-line"><span class="k">Evening · Mon – Sat</span><span class="v">5 PM – 8 PM</span></div>
+              <div class="info-line"><span class="k">Sunday</span><span class="v">Closed</span></div>
+              <div class="info-line"><span class="k">Consultation</span><span class="v">Rs 300 · at clinic</span></div>
             </div>
           </div>
           <div class="form-card" style="margin-top:16px">
@@ -70,7 +71,7 @@
                 <textarea id="eqMsg" placeholder="How can we help?"></textarea>
               </div>
               <button class="btn btn-primary btn-block" type="submit">Send enquiry</button>
-              <p class="small muted" style="margin-top:10px">Your enquiry is sent to the clinic. For anything urgent, please come to the clinic during opening hours or call / WhatsApp us. In a medical emergency, call 112.</p>
+              <p class="small muted" style="margin-top:10px">For anything urgent, call or WhatsApp us. In a medical emergency, call 112.</p>
             </form>
             <div id="enquiryDone"></div>
           </div>
@@ -88,15 +89,17 @@
   document.getElementById("dirBtn").href = mapsDirUrl();
   document.getElementById("mapBtn").href = mapsSearchUrl();
 
-  /* If the clinic number is confirmed later, it appears here automatically */
-  if (hasPhone() || hasWhatsApp()) {
-    document.getElementById("phoneBlock").innerHTML =
-      (hasPhone() ? `Call us at <a href="${callHref()}"><strong>${phoneDisplay()}</strong></a> during clinic hours.` : "") +
-      (hasWhatsApp() ? ` You can also message us on WhatsApp — we reply during clinic hours.` : "");
-    document.getElementById("phoneActions").innerHTML =
-      (hasPhone() ? `<a class="btn btn-outline" href="${callHref()}">Call the clinic</a>` : "") +
-      (hasWhatsApp() ? `<a class="btn btn-whatsapp" href="${waHref()}" target="_blank" rel="noopener">Chat on WhatsApp</a>` : "") +
-      `<a class="btn btn-primary" href="book.html">Book an appointment</a>`;
+  /* Action tiles */
+  document.getElementById("tileCall").href = callHref();
+  document.getElementById("tileWa").href = waHref();
+  document.getElementById("tileCallIc").innerHTML = iconSvg("phone", 22);
+  document.getElementById("tileWaIc").innerHTML = WA_ICON.replace('width="26" height="26"', 'width="22" height="22"').replace('fill="#fff"', 'fill="currentColor"');
+  document.getElementById("tileBookIc").innerHTML = iconSvg("calendar", 22);
+  document.getElementById("addrIc").innerHTML = iconSvg("pin", 22);
+  document.getElementById("hrsIc").innerHTML = iconSvg("clock", 22);
+  if (hasPhone()) {
+    document.getElementById("phoneLine").innerHTML =
+      `Call or WhatsApp: <a href="${callHref()}"><strong>${phoneDisplay()}</strong></a> · we reply during clinic hours`;
   }
 
   document.getElementById("enquiryForm").addEventListener("submit", async e => {

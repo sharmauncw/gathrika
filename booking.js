@@ -175,7 +175,7 @@ function navRow(panel, opts) {
 function renderStepService(panel) {
   const services = bookableServices();
   panel.innerHTML = `<h2>What would you like to book?</h2>
-    <p class="muted">Choose a service. Every first visit includes time with ${CLINIC.doctor} — procedures are planned after assessment.</p>
+    <p class="muted">Choose a service to begin.</p>
     <div class="option-list" role="listbox" aria-label="Services">
       ${services.map(s => `
         <button type="button" class="option-btn ${wiz.service === s.slug ? "selected" : ""}" data-slug="${s.slug}" role="option" aria-selected="${wiz.service === s.slug}">

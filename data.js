@@ -80,7 +80,7 @@ function phoneDisplay() { return CONFIG.PHONE_DISPLAY || CONFIG.PHONE; }
    ============================================================ */
 const SERVICES = [
   {
-    slug: "dermatology-consultation", name: "Dermatology Consultation", category: "Consultation",
+    slug: "dermatology-consultation", icon: "plus-circle", short: "A complete skin, hair & nail check-up with the doctor.", name: "Dermatology Consultation", category: "Consultation",
     alsoCategories: ["Pediatric"], status: "listed", bookable: true,
     priceDisplay: "Rs 300", durationMin: 20, sessions: "Single visit (15–20 min)",
     summary: "A complete skin, hair or nail check-up with Dr. G. Kiranmayee — diagnosis, a clear treatment plan, and honest advice on what you actually need.",
@@ -99,7 +99,7 @@ const SERVICES = [
     relatedProducts: ["gentle-foaming-cleanser", "broad-spectrum-sunscreen"]
   },
   {
-    slug: "acne-treatment", name: "Acne & Pimples Treatment", category: "Skin",
+    slug: "acne-treatment", icon: "sparkle", short: "Doctor-led care for pimples, marks and scars.", name: "Acne & Pimples Treatment", category: "Skin",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 20, sessions: "Course of 3–6 months",
     summary: "Doctor-led acne care that combines medicines, skin-care correction and procedures where needed — planned around your skin type and acne stage.",
@@ -118,7 +118,7 @@ const SERVICES = [
     relatedProducts: ["anti-acne-gel", "oil-free-gel-moisturiser", "niacinamide-serum"]
   },
   {
-    slug: "chronic-skin-disorders", name: "Psoriasis, Eczema & Chronic Skin Disorders", category: "Skin",
+    slug: "chronic-skin-disorders", icon: "shield", short: "Long-term care for psoriasis, eczema & recurring skin problems.", name: "Psoriasis, Eczema & Chronic Skin Disorders", category: "Skin",
     alsoCategories: ["Pediatric"], status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 20, sessions: "Long-term care plan",
     summary: "Ongoing, doctor-supervised care for psoriasis, eczema and other long-standing skin conditions — focused on control, comfort and flare prevention.",
@@ -136,7 +136,7 @@ const SERVICES = [
     relatedProducts: ["hydrating-cream-moisturiser", "gentle-foaming-cleanser"]
   },
   {
-    slug: "skin-rash-allergy-fungal", name: "Skin Rash, Allergy & Fungal Infections", category: "Skin",
+    slug: "skin-rash-allergy-fungal", icon: "waves", short: "The right diagnosis for itching, rashes & fungal infections.", name: "Skin Rash, Allergy & Fungal Infections", category: "Skin",
     alsoCategories: ["Pediatric"], status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 20, sessions: "Usually 1–3 visits",
     summary: "Quick, correct diagnosis for itching, rashes, allergies and fungal infections — so you stop guessing and stop using the wrong cream.",
@@ -154,7 +154,7 @@ const SERVICES = [
     relatedProducts: ["gentle-foaming-cleanser", "anti-dandruff-shampoo"]
   },
   {
-    slug: "vitiligo-warts-moles", name: "Vitiligo, Warts, Moles & Skin Tags", category: "Skin",
+    slug: "vitiligo-warts-moles", icon: "circles", short: "Assessment of white patches, warts, moles & skin tags.", name: "Vitiligo, Warts, Moles & Skin Tags", category: "Skin",
     status: "confirm", bookable: false,
     priceDisplay: "On consultation", durationMin: 20, sessions: "Procedure-based",
     summary: "Assessment and procedure-based care for white patches, warts, moles and skin tags — confirmed with the doctor after examination.",
@@ -173,7 +173,7 @@ const SERVICES = [
     relatedProducts: ["broad-spectrum-sunscreen"]
   },
   {
-    slug: "pigmentation-treatment", name: "Melasma, Sun Spots & Pigmentation", category: "Skin",
+    slug: "pigmentation-treatment", icon: "sun", short: "Stepwise care for melasma, sun spots & tanning.", name: "Melasma, Sun Spots & Pigmentation", category: "Skin",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 20, sessions: "Peels / laser / topical plan",
     summary: "A careful, stepwise plan for melasma, sun spots, age spots and tanning — combining medicines, sun protection and procedures that suit Indian skin.",
@@ -192,7 +192,7 @@ const SERVICES = [
     relatedProducts: ["broad-spectrum-sunscreen", "vitamin-c-serum", "depigmenting-cream"]
   },
   {
-    slug: "chemical-peels", name: "Chemical Peels", category: "Aesthetic",
+    slug: "chemical-peels", icon: "layers", short: "Doctor-chosen peels for glow, marks & uneven tone.", name: "Chemical Peels", category: "Aesthetic",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 30, sessions: "4–6 sessions, 2–3 weeks apart",
     summary: "Doctor-chosen peels — glycolic, salicylic and more — to refresh dull skin, even out tone and help acne, marks and early fine lines.",
@@ -211,7 +211,7 @@ const SERVICES = [
     relatedProducts: ["broad-spectrum-sunscreen", "hydrating-cream-moisturiser", "vitamin-c-serum"]
   },
   {
-    slug: "anti-aging-solutions", name: "Anti-Aging Solutions", category: "Aesthetic",
+    slug: "anti-aging-solutions", icon: "leaf", short: "Peels, laser & skin-quality care for a fresher look.", name: "Anti-Aging Solutions", category: "Aesthetic",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 30, sessions: "Planned per concern",
     summary: "Practical anti-aging care — peels, laser and skin-quality treatments chosen by the doctor to soften lines and restore a fresher look.",
@@ -230,7 +230,7 @@ const SERVICES = [
     relatedProducts: ["vitamin-c-serum", "broad-spectrum-sunscreen", "hydrating-cream-moisturiser"]
   },
   {
-    slug: "acne-scar-treatment", name: "Acne Scar Treatment", category: "Aesthetic",
+    slug: "acne-scar-treatment", icon: "activity", short: "Laser, microneedling & subcision, matched to your scar type.", name: "Acne Scar Treatment", category: "Aesthetic",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 45, sessions: "3–6 sessions",
     summary: "Combined scar care — laser, microneedling and subcision selected by scar type — to steadily improve pitted and uneven acne scars.",
@@ -249,7 +249,7 @@ const SERVICES = [
     relatedProducts: ["broad-spectrum-sunscreen", "niacinamide-serum"]
   },
   {
-    slug: "hydrafacial-medi-facial", name: "HydraFacial / Medi-Facial & Glow Treatments", category: "Aesthetic",
+    slug: "hydrafacial-medi-facial", icon: "droplets", short: "Deep-cleanse, hydrate & glow — supervised by the doctor.", name: "HydraFacial / Medi-Facial & Glow Treatments", category: "Aesthetic",
     status: "confirm", bookable: false,
     priceDisplay: "On consultation", durationMin: 45, sessions: "Monthly, or before an event",
     summary: "Doctor-supervised medi-facials for deep cleansing, hydration and glow — confirmed with the doctor for your skin type.",
@@ -268,7 +268,7 @@ const SERVICES = [
     relatedProducts: ["hydrating-cream-moisturiser", "gentle-foaming-cleanser"]
   },
   {
-    slug: "botox-fillers-threads", name: "Botox, Fillers & Thread Lift", category: "Aesthetic",
+    slug: "botox-fillers-threads", icon: "syringe", short: "Doctor-only injectables, assessed in consultation first.", name: "Botox, Fillers & Thread Lift", category: "Aesthetic",
     status: "confirm", bookable: false,
     priceDisplay: "On consultation", durationMin: 45, sessions: "Doctor-only procedures",
     summary: "Injectable and thread procedures performed only by the doctor, and only where genuinely suitable — assessed in consultation first.",
@@ -287,7 +287,7 @@ const SERVICES = [
     relatedProducts: []
   },
   {
-    slug: "laser-therapy", name: "Laser Therapy (Hair Reduction, Pigmentation, Scars)", category: "Laser",
+    slug: "laser-therapy", icon: "zap", short: "Hair reduction, pigmentation & scar laser care.", name: "Laser Therapy (Hair Reduction, Pigmentation, Scars)", category: "Laser",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 45, sessions: "6–8 sessions (hair reduction)",
     summary: "Laser treatment for unwanted hair, pigmentation and scars — settings and suitability decided by the doctor for your skin type.",
@@ -306,7 +306,7 @@ const SERVICES = [
     relatedProducts: ["broad-spectrum-sunscreen", "hydrating-cream-moisturiser"]
   },
   {
-    slug: "hair-fall-treatment", name: "Hair Fall & Alopecia Treatment (incl. PRP / GFC)", category: "Hair",
+    slug: "hair-fall-treatment", icon: "strands", short: "Find the cause first — medicines & PRP / GFC where advised.", name: "Hair Fall & Alopecia Treatment (incl. PRP / GFC)", category: "Hair",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 30, sessions: "4–6 sessions for PRP / GFC",
     summary: "Trichology care for hair fall and thinning — find the cause first, then treat with medicines and PRP / GFC where the doctor advises.",
@@ -325,7 +325,7 @@ const SERVICES = [
     relatedProducts: ["anti-hair-fall-serum", "hair-skin-supplement"]
   },
   {
-    slug: "dandruff-scalp-disorders", name: "Dandruff & Scalp Disorders", category: "Hair",
+    slug: "dandruff-scalp-disorders", icon: "snow", short: "Care for flakes, itching & scalp problems that keep returning.", name: "Dandruff & Scalp Disorders", category: "Hair",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 20, sessions: "Usually 2–4 weeks of care",
     summary: "Treatment for dandruff, itchy or flaky scalp, and scalp psoriasis or dermatitis — matched to the actual cause, not guesswork.",
@@ -343,7 +343,7 @@ const SERVICES = [
     relatedProducts: ["anti-dandruff-shampoo", "anti-hair-fall-serum"]
   },
   {
-    slug: "nail-disorders", name: "Nail Infections & Disorders", category: "Nails",
+    slug: "nail-disorders", icon: "nail", short: "Diagnosis & treatment for infected, brittle or changed nails.", name: "Nail Infections & Disorders", category: "Nails",
     status: "listed", bookable: true,
     priceDisplay: "On consultation", durationMin: 20, sessions: "Course-based",
     summary: "Diagnosis and treatment for fungal nail infections, brittle or discoloured nails, and nail changes linked to skin disease.",
@@ -361,7 +361,7 @@ const SERVICES = [
     relatedProducts: []
   },
   {
-    slug: "bridal-skin-package", name: "Bridal / Pre-Wedding Skin Package", category: "Aesthetic",
+    slug: "bridal-skin-package", icon: "flower", short: "A doctor-planned skin programme for your big day.", name: "Bridal / Pre-Wedding Skin Package", category: "Aesthetic",
     status: "confirm", bookable: false,
     priceDisplay: "On consultation", durationMin: 30, sessions: "Planned over 4–8 weeks",
     summary: "A doctor-planned pre-wedding skin programme over 4–8 weeks — treatments and home care sequenced safely around your date.",
@@ -469,6 +469,61 @@ const TESTIMONIALS = [
 const REVIEW_THEMES = ["Doctor friendliness", "Clear explanation", "Treatment satisfaction", "Value for money", "Short wait time"];
 
 /* ============================================================
+   ICONS — simple stroke SVGs (24×24) used by the visual card
+   system. iconSvg(name, size) returns a full inline SVG.
+   ============================================================ */
+const ICON_PATHS = {
+  "plus-circle": '<circle cx="12" cy="12" r="8.6"/><path d="M12 8.4v7.2M8.4 12h7.2"/>',
+  "sparkle": '<path d="M11 4.2l1.6 4.4 4.4 1.6-4.4 1.6L11 16.2l-1.6-4.4L5 10.2l4.4-1.6z"/><path d="M18.6 15.2l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/><circle cx="5.6" cy="17.6" r="1.1"/>',
+  "shield": '<path d="M12 3.4l6.6 2.6v5.3c0 4.3-2.8 7.4-6.6 9.3-3.8-1.9-6.6-5-6.6-9.3V6z"/><path d="M9 11.9l2.2 2.2 4-4.3"/>',
+  "waves": '<path d="M2.5 7.5c2-2.2 4-2.2 6 0s4 2.2 6 0 4-2.2 6 0"/><path d="M2.5 12.5c2-2.2 4-2.2 6 0s4 2.2 6 0 4-2.2 6 0"/><path d="M2.5 17.5c2-2.2 4-2.2 6 0s4 2.2 6 0 4-2.2 6 0"/>',
+  "activity": '<path d="M2.5 12h4l2.4-6.5 4 13L15.3 12h6.2"/>',
+  "circles": '<circle cx="9.2" cy="9.8" r="5.4"/><circle cx="16.2" cy="15.4" r="4.4"/>',
+  "sun": '<circle cx="12" cy="12" r="4"/><path d="M12 2.8v2.3M12 18.9v2.3M2.8 12h2.3M18.9 12h2.3M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/>',
+  "layers": '<path d="M12 3.4l9.2 4.8-9.2 4.8L2.8 8.2z"/><path d="M3.8 13.4l8.2 4.3 8.2-4.3"/>',
+  "leaf": '<path d="M5 19.2C5 10.6 11.4 4.6 20 4c.5 8.6-5.4 15.2-14 15.2z"/><path d="M5 19.2c2.4-5.6 6-9.7 10.6-12.2"/>',
+  "droplet": '<path d="M12 3.4c2.8 3.8 5.6 7 5.6 10.1a5.6 5.6 0 1 1-11.2 0C6.4 10.4 9.2 7.2 12 3.4z"/>',
+  "droplets": '<path d="M10.2 3.6c2.5 3.4 5 6.2 5 9a5 5 0 1 1-10 0c0-2.8 2.5-5.6 5-9z"/><path d="M17.8 13.6c1.3 1.8 2.6 3.3 2.6 4.8a2.6 2.6 0 1 1-5.2 0c0-1.5 1.3-3 2.6-4.8z"/>',
+  "syringe": '<path d="M4.2 19.8l.9-3.6L14.4 6.9l2.6 2.6-9.3 9.3z"/><path d="M13.2 4.6l6.6 6.6"/><path d="M17.4 2.8l3.8 3.8"/><path d="M15.3 7.6l2.4-2.4"/>',
+  "zap": '<path d="M13 2.6L4.6 13.4h6.2l-1 8L18.2 10.6h-6.2z"/>',
+  "strands": '<path d="M7 3.2q-2.1 4.4 0 8.8t0 8.8"/><path d="M12 3.2q-2.1 4.4 0 8.8t0 8.8"/><path d="M17 3.2q-2.1 4.4 0 8.8t0 8.8"/>',
+  "snow": '<path d="M12 3v18M4.4 7.6l15.2 8.8M19.6 7.6L4.4 16.4"/><path d="M12 3l-2 2.2M12 3l2 2.2M12 21l-2-2.2M12 21l2-2.2"/>',
+  "nail": '<rect x="7.2" y="3.2" width="9.6" height="17.6" rx="4.8"/><path d="M7.4 11.5h9.2"/>',
+  "flower": '<circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="5.9" r="2.8"/><circle cx="17.3" cy="9.8" r="2.8"/><circle cx="15.6" cy="15.9" r="2.8"/><circle cx="8.4" cy="15.9" r="2.8"/><circle cx="6.7" cy="9.8" r="2.8"/>',
+  "clock": '<circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.1 2"/>',
+  "calendar": '<rect x="3.4" y="5" width="17.2" height="16" rx="2.6"/><path d="M3.4 10h17.2M8 2.8V6.4M16 2.8v3.6"/>',
+  "check": '<path d="M4.5 12.6l5 5L19.5 6.8"/>',
+  "arrow": '<path d="M4 12h14.5M13.5 6l6 6-6 6"/>',
+  "pin": '<path d="M20 10.2c0 5.8-8 11.8-8 11.8s-8-6-8-11.8a8 8 0 0 1 16 0z"/><circle cx="12" cy="10.2" r="3"/>',
+  "phone": '<path d="M21.5 16.9v2.9a2 2 0 0 1-2.2 2 19.6 19.6 0 0 1-8.5-3.1 19.3 19.3 0 0 1-5.9-5.9A19.6 19.6 0 0 1 1.8 4.3 2 2 0 0 1 3.8 2.3h2.9a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L7.7 10a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 1.9z"/>',
+  "cap": '<path d="M12 4.4L2.4 9 12 13.6 21.6 9z"/><path d="M6.4 11.4v4.4c0 1.5 2.5 2.9 5.6 2.9s5.6-1.4 5.6-2.9v-4.4"/><path d="M21.6 9v5.2"/>',
+  "bottle": '<path d="M10 3.4h4V7l1.1 2.1c.3.6.5 1.3.5 2V19a2.2 2.2 0 0 1-2.2 2.2h-2.8A2.2 2.2 0 0 1 8.4 19v-7.9c0-.7.2-1.4.5-2L10 7z"/><path d="M8.5 14.6h7"/>',
+  "jar": '<rect x="5.4" y="3.8" width="13.2" height="4" rx="1.4"/><path d="M5 7.8v10A3.4 3.4 0 0 0 8.4 21.2h7.2A3.4 3.4 0 0 0 19 17.8v-10"/>',
+  "capsule": '<rect x="3.2" y="8.6" width="17.6" height="8" rx="4" transform="rotate(-28 12 12.6)"/><path d="M9.8 6.4l5.4 10.6"/>',
+  "target": '<circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/>',
+  "star": '<path fill="currentColor" stroke="none" d="M12 2.5l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.6l-5.9 3.2 1.2-6.6L2.4 9.5l6.7-.9z"/>'
+};
+function iconSvg(name, size) {
+  const inner = ICON_PATHS[name] || ICON_PATHS["sparkle"];
+  const s = size || 24;
+  return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+}
+/* Five gold stars (rating displays) */
+function starsHtml(n) {
+  let out = "";
+  for (let i = 0; i < (n || 5); i++) out += iconSvg("star", 16);
+  return out;
+}
+/* Gradient art band tint per treatment category */
+function categoryClass(category) {
+  return "art-" + String(category || "skin").toLowerCase().replace(/[^a-z]/g, "");
+}
+function productIcon(p) {
+  const byCat = { "Cleansers": "bottle", "Moisturisers": "jar", "Sunscreens": "sun", "Serums": "droplet", "Acne Care": "target", "Pigmentation Care": "sparkle", "Hair Care": "strands", "Supplements": "capsule" };
+  return byCat[p.category] || "sparkle";
+}
+
+/* ============================================================
    Shared chrome: header, footer, floating WhatsApp button,
    mobile bottom bar — injected into every page.
    ============================================================ */
@@ -515,13 +570,13 @@ function renderChrome(activePage) {
           <p>${CLINIC.addressLines.join("<br>")}</p>
           ${hasPhone() ? `<p>Call / WhatsApp: <a href="${callHref()}">${phoneDisplay()}</a></p>` : ""}
           <p><a href="${mapsDirUrl()}" target="_blank" rel="noopener">Get directions</a></p>
-          <p class="small">Doctor-led care for skin, hair and nails by ${CLINIC.doctor} (${CLINIC.qualifications}).<br>${CLINIC.registration}</p>
+          <p class="small">${CLINIC.doctor} (${CLINIC.qualifications})<br>${CLINIC.registration}</p>
         </div>
         <div>
           <h4>Clinic hours</h4>
           <ul>
-            <li>Mon – Sat: 11:00 AM – 1:00 PM</li>
-            <li>Mon – Sat: 5:00 PM – 8:00 PM</li>
+            <li>Mon – Sat: 11 AM – 1 PM</li>
+            <li>Mon – Sat: 5 PM – 8 PM</li>
             <li>Sunday: Closed</li>
           </ul>
           <p class="small">Consultation: Rs ${CLINIC.consultFee} · Est. ${CLINIC.established}</p>
@@ -531,16 +586,14 @@ function renderChrome(activePage) {
           <ul>
             <li><a href="book.html">Book an appointment</a></li>
             <li><a href="treatments.html">Treatments</a></li>
-            <li><a href="products.html">Products at the clinic</a></li>
-            <li><a href="reviews.html">Patient reviews</a></li>
-            <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="terms.html">Terms of use</a></li>
-            <li><a href="disclaimer.html">Medical disclaimer</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="reviews.html">Reviews</a></li>
+            <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-legal">
-        <p>© 2026 Gathrika Skin Clinic. Information on this website is for general awareness and is not a substitute for an in-person medical consultation.</p>
+        <p>© 2026 Gathrika Skin Clinic. Website information is for general awareness — not a substitute for an in-person consultation. · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="disclaimer.html">Disclaimer</a></p>
         <p class="small"><img class="studio-mark" src="studio-logo.png" alt="Sharma Digital Studio logo">Website by Sharma Digital Studio · <a href="admin.html">Clinic login</a></p>
       </div>
     </div>
@@ -549,7 +602,7 @@ function renderChrome(activePage) {
   <nav class="mobile-bar" aria-label="Quick actions">
     <a href="${call}">${PHONE_ICON}<span>Call</span></a>
     <a href="${wa}" ${hasWhatsApp() ? 'target="_blank" rel="noopener"' : ""}>${WA_ICON.replace('width="26" height="26"', 'width="20" height="20"').replace('fill="#fff"', 'fill="currentColor"')}<span>WhatsApp</span></a>
-    <a class="book-link" href="book.html"><span style="font-size:1.05rem;line-height:1" aria-hidden="true">📅</span><span>Book</span></a>
+    <a class="book-link" href="book.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.4" y="5" width="17.2" height="16" rx="2.6"/><path d="M3.4 10h17.2M8 2.8V6.4M16 2.8v3.6"/></svg><span>Book</span></a>
     <a href="${mapsDirUrl()}" target="_blank" rel="noopener">${PIN_ICON}<span>Directions</span></a>
   </nav>`;
 
@@ -577,16 +630,25 @@ function renderChrome(activePage) {
   });
 
   /* Subtle reveal on scroll, respecting reduced motion.
-     A timeout fallback guarantees content is never left hidden. */
-  const revealEls = document.querySelectorAll(".reveal");
-  if (revealEls.length && "IntersectionObserver" in window) {
+     A timeout fallback guarantees content is never left hidden.
+     Pages inject cards after the chrome renders, so a
+     MutationObserver picks up .reveal elements added later. */
+  if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
     }, { threshold: 0.08 });
-    revealEls.forEach(el => io.observe(el));
-    setTimeout(() => revealEls.forEach(el => el.classList.add("in")), 3000);
+    const watchReveal = el => { if (el && !el.classList.contains("in")) io.observe(el); };
+    document.querySelectorAll(".reveal").forEach(watchReveal);
+    new MutationObserver(muts => {
+      muts.forEach(m => m.addedNodes.forEach(n => {
+        if (n.nodeType !== 1) return;
+        if (n.classList && n.classList.contains("reveal")) watchReveal(n);
+        if (n.querySelectorAll) n.querySelectorAll(".reveal").forEach(watchReveal);
+      }));
+    }).observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => document.querySelectorAll(".reveal").forEach(el => el.classList.add("in")), 3000);
   } else {
-    revealEls.forEach(el => el.classList.add("in"));
+    document.querySelectorAll(".reveal").forEach(el => el.classList.add("in"));
   }
 }
 
