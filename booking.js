@@ -391,10 +391,15 @@ async function submitBooking() {
   const d = wiz.details;
   const ref = wiz.editingRef ? wiz.editingRef : refCode();
 
-  /* 1) Save to the clinic's system first — no server row, no confirmation. */
-  if (window.sbReady) {
+  /* 1) Save to the clinic's system first — no server row, no confirmation.
+     If the backend never loaded (CDN/network failure), sbReady is false:
+     that must take the same honest error path as a failed insert.
+     Never show a confirmation for a request the clinic did not receive. */
+  {
     let insErr = null;
-    try {
+    if (!window.sbReady) {
+      insErr = new Error("backend unavailable");
+    } else try {
       const { error } = await window.sb.from("appointments").insert({
         ref_code: ref,
         service_slug: wiz.service,
@@ -545,7 +550,14 @@ function initManage() {
       document.getElementById("mgCancel").addEventListener("click", () => {
         b.status = "Cancelled"; b.updatedAt = new Date().toISOString();
         saveBookings(list);
-        out.innerHTML = `<div class="notice notice-info">Booking <strong>${b.ref}</strong> has been cancelled. We hope to see you another time.</div>`;
+        /* The cancellation is recorded on this device. The clinic's own
+           book still holds the slot until they hear from the patient —
+           say so plainly and give them the one-tap way to tell the clinic. */
+        out.innerHTML = `<div class="notice notice-info">Booking <strong>${b.ref}</strong> has been cancelled on this device.
+        To free your slot at the clinic, please also let them know —
+        ${hasWhatsApp()
+          ? `<a href="${waHref("Hi, I would like to cancel my appointment at Gathrika Skin Clinic. My reference code is " + b.ref + " — " + b.serviceName + ", " + prettyDate(b.date) + ", " + b.timeLabel + ".")}" target="_blank" rel="noopener">tap here to cancel on WhatsApp</a>.`
+          : `message the clinic from the <a href="contact.html">contact page</a>.`}</div>`;
       });
       document.getElementById("mgReschedule").addEventListener("click", () => {
         wiz.editingRef = b.ref;
